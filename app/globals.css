@@ -1,0 +1,611 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 0 0% 7%;
+  --foreground: 0 0% 98%;
+
+  --card: 0 0% 9%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 0 0% 9%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 0 72% 51%;
+  --primary-foreground: 0 0% 98%;
+
+  --secondary: 0 0% 13%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 65%;
+
+  --accent: 0 0% 13%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 0 72% 51%;
+
+  --radius: 0.5rem;
+
+  /* Contribution colors - default palette */
+  --contribution-level-0: #121212;
+  --contribution-level-1: rgba(255, 59, 48, 0.2);
+  --contribution-level-2: rgba(255, 59, 48, 0.4);
+  --contribution-level-3: rgba(255, 59, 48, 0.6);
+  --contribution-level-4: rgba(255, 59, 48, 0.8);
+
+  /* Contribution gradient for special palettes */
+  --contribution-gradient: linear-gradient(135deg, rgba(255, 59, 48, 0.2), rgba(255, 59, 48, 0.8));
+
+  /* Chart colors */
+  --chart-1: rgba(255, 59, 48, 0.8);
+  --chart-2: rgba(255, 107, 97, 0.8);
+  --chart-3: rgba(255, 156, 146, 0.8);
+  --chart-4: rgba(255, 205, 200, 0.8);
+  --chart-5: rgba(255, 230, 228, 0.8);
+
+  /* Font settings */
+  --text-size-base: 1rem;
+  --font-family: var(--font-inter), system-ui, sans-serif;
+  --font-family-mono: var(--font-mono), monospace;
+}
+
+.dark {
+  --background: 0 0% 7%;
+  --foreground: 0 0% 98%;
+
+  --card: 0 0% 9%;
+  --card-foreground: 0 0% 98%;
+
+  --popover: 0 0% 9%;
+  --popover-foreground: 0 0% 98%;
+
+  --primary: 0 72% 51%;
+  --primary-foreground: 0 0% 98%;
+
+  --secondary: 0 0% 13%;
+  --secondary-foreground: 0 0% 98%;
+
+  --muted: 0 0% 15%;
+  --muted-foreground: 0 0% 65%;
+
+  --accent: 0 0% 13%;
+  --accent-foreground: 0 0% 98%;
+
+  --destructive: 0 62% 30%;
+  --destructive-foreground: 0 0% 98%;
+
+  --border: 0 0% 15%;
+  --input: 0 0% 15%;
+  --ring: 0 72% 51%;
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+    font-size: var(--text-size-base);
+    font-family: var(--font-family);
+  }
+  code,
+  pre,
+  kbd {
+    font-family: var(--font-family-mono);
+  }
+}
+
+.gradient-text {
+  background: linear-gradient(90deg, hsl(0, 72%, 51%) 0%, hsl(350, 72%, 51%) 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.gradient-bg {
+  background: radial-gradient(circle at top right, rgba(255, 59, 48, 0.15) 0%, transparent 50%);
+}
+
+.contribution-level-0 {
+  background-color: var(--contribution-level-0);
+}
+
+.contribution-level-1 {
+  background-color: var(--contribution-level-1);
+}
+
+.contribution-level-2 {
+  background-color: var(--contribution-level-2);
+}
+
+.contribution-level-3 {
+  background-color: var(--contribution-level-3);
+}
+
+.contribution-level-4 {
+  background-color: var(--contribution-level-4);
+}
+
+/* Gradient styles for special palettes */
+.contribution-gradient-1 {
+  background: var(--contribution-gradient);
+  opacity: 0.2;
+}
+
+.contribution-gradient-2 {
+  background: var(--contribution-gradient);
+  opacity: 0.4;
+}
+
+.contribution-gradient-3 {
+  background: var(--contribution-gradient);
+  opacity: 0.6;
+}
+
+.contribution-gradient-4 {
+  background: var(--contribution-gradient);
+  opacity: 0.8;
+}
+
+/* 3D effects */
+.cell-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+.cell-3d:hover {
+  transform: translateZ(10px) rotateX(10deg) rotateY(10deg);
+}
+
+.graph-3d-container {
+  perspective: 1000px;
+}
+
+.graph-3d {
+  transform-style: preserve-3d;
+  transform: rotateX(20deg) rotateY(20deg);
+  transition: transform 0.5s ease;
+}
+
+.graph-3d:hover {
+  transform: rotateX(30deg) rotateY(30deg);
+}
+
+/* Holographic effect */
+@keyframes holographic {
+  0% {
+    filter: hue-rotate(0deg) saturate(1);
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+  50% {
+    filter: hue-rotate(30deg) saturate(1.5);
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.2);
+  }
+  100% {
+    filter: hue-rotate(0deg) saturate(1);
+    box-shadow: 0 0 0 rgba(255, 255, 255, 0);
+  }
+}
+
+.holographic-effect {
+  animation: holographic 3s infinite;
+}
+
+/* Heatmap specific styles */
+.heatmap-container {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(30px, 1fr));
+  gap: 2px;
+}
+
+.heatmap-cell {
+  aspect-ratio: 1;
+  border-radius: 2px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.heatmap-cell:hover {
+  transform: scale(1.2);
+  opacity: 0.9;
+}
+
+/* Chart border styles */
+.chart-border-none {
+  border: none;
+}
+
+.chart-border-solid {
+  border: 1px solid var(--border);
+}
+
+.chart-border-gradient {
+  border: 1px solid transparent;
+  background-clip: padding-box;
+  position: relative;
+}
+
+.chart-border-gradient::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  margin: -1px;
+  border-radius: inherit;
+  background: var(--contribution-gradient);
+  z-index: -1;
+}
+
+/* Chart background styles */
+.chart-bg-solid {
+  background-color: var(--card);
+}
+
+.chart-bg-transparent {
+  background-color: transparent;
+}
+
+/* Animation styles */
+.animate-in {
+  animation: fadeIn 0.5s ease-out;
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Bar chart styles */
+.bar-grouped {
+  /* Default style */
+}
+
+.bar-stacked {
+  /* Stacked bar style */
+}
+
+.bar-stacked100 {
+  /* 100% stacked bar style */
+}
+
+/* Legend position styles */
+.legend-top {
+  flex-direction: column;
+}
+
+.legend-bottom {
+  flex-direction: column-reverse;
+}
+
+.legend-left {
+  flex-direction: row;
+}
+
+.legend-right {
+  flex-direction: row-reverse;
+}
+
+/* Data label styles */
+.data-label {
+  font-size: 0.75rem;
+  font-weight: 500;
+  text-anchor: middle;
+}
+
+/* Customization panel styles */
+.customization-panel {
+  width: 320px;
+  height: 100%;
+  overflow-y: auto;
+  border-left: 1px solid var(--border);
+  background-color: var(--background);
+  transition: transform 0.3s ease;
+}
+
+/* Hover effects for buttons */
+.customization-panel button:hover {
+  opacity: 0.9;
+  transform: translateY(-1px);
+  transition: all 0.2s ease;
+}
+
+/* Tooltip styles */
+.tooltip {
+  position: relative;
+  display: inline-block;
+}
+
+.tooltip .tooltip-text {
+  visibility: hidden;
+  width: 120px;
+  background-color: var(--popover);
+  color: var(--popover-foreground);
+  text-align: center;
+  border-radius: var(--radius);
+  padding: 5px;
+  position: absolute;
+  z-index: 1;
+  bottom: 125%;
+  left: 50%;
+  margin-left: -60px;
+  opacity: 0;
+  transition: opacity 0.3s;
+}
+
+.tooltip:hover .tooltip-text {
+  visibility: visible;
+  opacity: 1;
+}
+
+/* Hexbin visualization styles */
+.hexbin-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+/* Circular visualization styles */
+.circular-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Wave visualization styles */
+.wave-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+}
+
+/* Particle visualization styles */
+.particle-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Fingerprint visualization styles */
+.fingerprint-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+/* Ensure Three.js canvas is visible */
+canvas {
+  display: block;
+}
+
+/* Fix for bar chart and line chart layout */
+.recharts-wrapper {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+.recharts-surface {
+  width: 100% !important;
+  height: 100% !important;
+}
+
+/* Responsive fixes */
+@media (max-width: 768px) {
+  .customization-panel {
+    width: 100%;
+    height: auto;
+    max-height: 50vh;
+    border-left: none;
+    border-top: 1px solid var(--border);
+  }
+}
+
+/* New animations for the landing page */
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+.animate-fade-in {
+  animation: fade-in 1s ease-out;
+}
+
+@keyframes gradient-shift {
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 300% auto;
+  animation: gradient-shift 4s ease infinite;
+}
+
+@keyframes float {
+  0% {
+    transform: translateY(0px);
+  }
+  50% {
+    transform: translateY(-10px);
+  }
+  100% {
+    transform: translateY(0px);
+  }
+}
+
+.animate-float {
+  animation: float 6s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+    opacity: 1;
+  }
+  50% {
+    transform: scale(1.05);
+    opacity: 0.8;
+  }
+  100% {
+    transform: scale(1);
+    opacity: 1;
+  }
+}
+
+.animate-pulse-slow {
+  animation: pulse 4s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+/* Typography enhancements */
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  letter-spacing: -0.025em;
+  font-weight: 700;
+}
+
+.font-display {
+  letter-spacing: -0.025em;
+}
+
+.font-mono {
+  font-family: var(--font-family-mono);
+}
+
+@keyframes buildingRise {
+  from {
+    height: 0;
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* Add these new animations for the transition loading skyline */
+@keyframes buildingRise {
+  from {
+    height: 0;
+  }
+  to {
+    height: var(--height);
+  }
+}
+
+@keyframes antennaRise {
+  from {
+    height: 0;
+  }
+  to {
+    height: 20px;
+  }
+}
+
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-spin-slow {
+  animation: spin 3s linear infinite;
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+/* Add hover effects for better interactivity */
+.hover-scale {
+  transition: transform 0.2s ease;
+}
+
+.hover-scale:hover {
+  transform: scale(1.05);
+}
+
+/* Improve focus states for accessibility */
+:focus-visible {
+  outline: 2px solid hsl(var(--primary));
+  outline-offset: 2px;
+}
+
+/* Add subtle animations for UI elements */
+.animate-in-right {
+  animation: slideInRight 0.3s ease forwards;
+}
+
+@keyframes slideInRight {
+  from {
+    opacity: 0;
+    transform: translateX(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+/* Improve tooltip animations */
+.tooltip-content {
+  transform-origin: var(--radix-tooltip-content-transform-origin);
+  animation: scaleIn 0.2s ease forwards;
+}
+
+@keyframes scaleIn {
+  from {
+    opacity: 0;
+    transform: scale(0.95);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+

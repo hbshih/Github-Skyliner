@@ -1,0 +1,5 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://commitcanvas.vercel.app/sitemap.xml
+
