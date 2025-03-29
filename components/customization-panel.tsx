@@ -57,6 +57,18 @@ interface CustomizationPanelProps {
 }
 
 export function CustomizationPanel({ username }: CustomizationPanelProps) {
+  // Add CSS styles for fixed panel layout
+  const panelStyles = {
+    position: 'sticky' as const,
+    top: 0,
+    height: '100vh',
+    overflowY: 'auto' as const,
+    borderLeft: '1px solid var(--border)',
+    backgroundColor: 'var(--background)',
+    width: '320px',
+    padding: '1rem',
+    zIndex: 10,
+  }
   const [mounted, setMounted] = useState(false)
   const { toast } = useToast()
   const visualizationRef = useRef<HTMLDivElement | null>(null)
@@ -536,7 +548,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
   ]
 
   return (
-    <div className="w-80 h-full border-l border-border/50 bg-background/95 backdrop-blur-sm flex flex-col">
+    <div style={panelStyles} className="border-l border-border/50 bg-background/95 backdrop-blur-sm flex flex-col">
       {/* Header */}
       <div className="border-b border-border/50 p-3">
         <h3 className="font-medium">Customize Skyline</h3>

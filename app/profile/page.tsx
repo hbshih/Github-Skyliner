@@ -16,7 +16,7 @@ import { getUser, type GitHubUser } from "@/app/actions/github"
 import { useVisualization } from "@/contexts/visualization-context"
 import { CustomizationPanel } from "@/components/customization-panel"
 import { KeyboardShortcuts } from "@/components/keyboard-shortcuts"
-import { ConfettiEffect } from "@/components/confetti-effect"
+// Removed confetti effect import
 import { TransitionLoading } from "@/components/transition-loading"
 
 export default function ProfilePage() {
@@ -88,8 +88,8 @@ export default function ProfilePage() {
 
   return (
     <div className="flex h-screen overflow-hidden">
-      <div className="flex-1 overflow-y-auto">
-        <div className="container py-10 gradient-bg">
+      <div className="flex-1 overflow-y-auto" style={{ height: '100vh' }}>
+        <div className="container py-6 gradient-bg">
           <Link
             href="/"
             className="inline-flex items-center text-sm font-medium mb-6 text-muted-foreground hover:text-foreground"
@@ -145,7 +145,6 @@ export default function ProfilePage() {
       {/* Customization Panel - Always visible */}
       <CustomizationPanel username={username} />
       <KeyboardShortcuts />
-      <ConfettiEffect />
     </div>
   )
 }

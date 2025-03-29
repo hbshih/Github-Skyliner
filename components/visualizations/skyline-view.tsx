@@ -940,7 +940,43 @@ function ContributionBuildings({
 // Camera controller with auto-rotation
 const skylineRotationSpeed = 0.5
 
-function CameraController({ animate = true, rotationSpeed = 0.5 }: { animate?: boolean; rotationSpeed?: number }) {
+// 3D Compass component to indicate rotation is possible
+function RotationIndicator() {
+  const { camera } = useThree()
+  
+  return (
+    <group position={[1.5, -1.5, 0]} scale={0.15}>
+      <Html position={[0, 0, 0]} transform distanceFactor={10}>
+        <div style={{ 
+          position: 'absolute', 
+          right: '20px', 
+          bottom: '20px', 
+          background: 'rgba(0,0,0,0.6)', 
+          borderRadius: '50%',
+          width: '60px', 
+          height: '60px',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          boxShadow: '0 0 10px rgba(0,0,0,0.2)',
+          pointerEvents: 'none'
+        }}>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 22C17.5228 22 22 17.5228 22 12C22 6.47715 17.5228 2 12 2C6.47715 2 2 6.47715 2 12C2 17.5228 6.47715 22 12 22Z" stroke="white" strokeOpacity="0.5" strokeWidth="2"/>
+            <path d="M12 15C13.6569 15 15 13.6569 15 12C15 10.3431 13.6569 9 12 9C10.3431 9 9 10.3431 9 12C9 13.6569 10.3431 15 12 15Z" fill="white"/>
+            <path d="M12 5L12 7" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M12 17L12 19" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M5 12L7 12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+            <path d="M17 12L19 12" stroke="white" strokeWidth="2" strokeLinecap="round"/>
+          </svg>
+        </div>
+      </Html>
+    </group>
+  )
+}
+
+// Changed default animate to false
+function CameraController({ animate = false, rotationSpeed = 0.5 }: { animate?: boolean; rotationSpeed?: number }) {
   const { camera, gl } = useThree()
   const controlsRef = useRef<any>(null)
 
@@ -953,7 +989,7 @@ function CameraController({ animate = true, rotationSpeed = 0.5 }: { animate?: b
   return (
     <OrbitControls
       ref={controlsRef}
-      args={[camera, gl.domElement]}
+      camera={camera} domElement={gl.domElement}
       enableZoom={true}
       enablePan={true}
       enableRotate={true}
@@ -1023,10 +1059,11 @@ export function SkylineView({
   // In the return statement, add the hoveredDay state to the ContributionBuildings component
   return (
     <div style={{ height: `${height}px`, width: "100%" }} className={containerClasses}>
-      <Canvas id="skyline-canvas" gl={{ preserveDrawingBuffer: true }}>
+      <Canvas id="skyline-canvas" gl={{ preserveDrawingBuffer: true }} style={{ height: '100%' }}>
         {/* Camera setup */}
         <PerspectiveCamera makeDefault position={[0, 15, 25]} fov={50} />
         <CameraController animate={animate} rotationSpeed={skylineRotationSpeed} />
+        <RotationIndicator />
 
         {/* Time of day lighting */}
         <TimeOfDayLighting timeOfDay={skylineTimeOfDay} />
