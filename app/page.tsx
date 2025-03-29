@@ -15,8 +15,15 @@ export default function Home() {
   const [isLoading, setIsLoading] = useState(false)
 
   const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
-    // Simply set loading to true - the browser will navigate to the profile page
-    setIsLoading(true)
+    e.preventDefault()
+    
+    const formData = new FormData(e.currentTarget)
+    const username = formData.get('username') as string
+    
+    if (username) {
+      setIsLoading(true)
+      window.location.href = `/profile?username=${encodeURIComponent(username)}`
+    }
   }
 
   return (
@@ -86,7 +93,7 @@ export default function Home() {
               </div>
 
               <div className="flex flex-col gap-4 min-[400px]:flex-row max-w-md">
-                <form className="flex-1 sm:flex-initial w-full" action="/profile" onSubmit={handleSubmit}>
+                <form className="flex-1 sm:flex-initial w-full" action="/profile" method="get" onSubmit={handleSubmit}>
                   <div className="flex flex-col sm:flex-row gap-3">
                     <div className="relative flex-1 group">
                       <Input

@@ -14,19 +14,23 @@ export function GithubDemo() {
     return () => clearInterval(interval)
   }, [])
 
-  // Generate a fake contribution graph
-  const generateContributions = () => {
-    return Array.from({ length: 365 }, (_, i) => {
-      const level = Math.floor(Math.random() * 5)
-      return {
-        id: i,
-        level,
-        highlight: i === activeCell,
-      }
-    })
-  }
-
-  const contributions = generateContributions()
+  // Use a consistent seed pattern for contributions to avoid hydration errors
+  const [contributions, setContributions] = useState(() => {
+    return Array.from({ length: 365 }, (_, i) => ({
+      id: i,
+      // Use predictable pattern based on day number instead of random
+      level: (i % 5),
+      highlight: false,
+    }))
+  })
+  
+  // Update the highlighted cell only after initial render
+  useEffect(() => {
+    setContributions(prev => prev.map(item => ({
+      ...item,
+      highlight: item.id === activeCell
+    })))
+  }, [activeCell])
 
   return (
     <Card className="w-full max-w-md overflow-hidden border border-border/50 bg-card/50 backdrop-blur-sm">
