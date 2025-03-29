@@ -1023,7 +1023,7 @@ export function SkylineView({
   // In the return statement, add the hoveredDay state to the ContributionBuildings component
   return (
     <div style={{ height: `${height}px`, width: "100%" }} className={containerClasses}>
-      <Canvas id="skyline-canvas">
+      <Canvas id="skyline-canvas" gl={{ preserveDrawingBuffer: true }}>
         {/* Camera setup */}
         <PerspectiveCamera makeDefault position={[0, 15, 25]} fov={50} />
         <CameraController animate={animate} rotationSpeed={skylineRotationSpeed} />

@@ -216,6 +216,9 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
           throw new Error("Could not find the 3D canvas element")
         }
 
+        // Note: We'll no longer try to modify the existing WebGL context as it causes errors
+        // Instead, we'll directly capture the canvas content as-is
+
         // Create a temporary canvas with the desired dimensions
         const tempCanvas = document.createElement("canvas")
         tempCanvas.width = selectedSize.width
@@ -232,6 +235,23 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
 
         // Draw the WebGL canvas to our temporary canvas
         tempCtx.drawImage(canvas, 0, 0, canvas.width, canvas.height, 0, 0, selectedSize.width, selectedSize.height)
+
+        // Add user information and branding to make it more shareable
+        tempCtx.font = `bold ${Math.round(selectedSize.width * 0.04)}px sans-serif`
+        tempCtx.fillStyle = "#ffffff"
+        tempCtx.textAlign = "left"
+        tempCtx.fillText(`@${username || "github"}`, 20, selectedSize.height - 60)
+        
+        // Add current year
+        tempCtx.textAlign = "right"
+        tempCtx.fillStyle = "#9333ea" // Purple accent color
+        tempCtx.fillText(`${new Date().getFullYear()}`, selectedSize.width - 20, selectedSize.height - 60)
+        
+        // Add app branding
+        tempCtx.font = `${Math.round(selectedSize.width * 0.025)}px sans-serif`
+        tempCtx.textAlign = "center"
+        tempCtx.fillStyle = "rgba(255, 255, 255, 0.7)"
+        tempCtx.fillText("CommitCanvas - github profile visualizer", selectedSize.width / 2, selectedSize.height - 20)
 
         // Get the data URL from the temporary canvas
         let dataUrl: string
