@@ -22,6 +22,8 @@ export default function Home() {
     
     if (username) {
       setIsLoading(true)
+      // Using window.location.href causes a full page reload
+      // We'll still use it since we want a clean state, but we'll prevent double loading in the profile page
       window.location.href = `/profile?username=${encodeURIComponent(username)}`
     }
   }

@@ -35,6 +35,12 @@ export default function ProfilePage() {
       return
     }
 
+    // Prevent double data fetching by checking if we already have the user data
+    if (user && user.login === username) {
+      setLoading(false)
+      return
+    }
+
     // Track when the loading started
     const loadingStartTime = Date.now()
     const minimumLoadingTime = 5000 // 5 seconds in milliseconds
