@@ -69,14 +69,10 @@ export function GithubDemo() {
             ))}
           </div>
 
-          <div className="mt-4 grid grid-cols-2 gap-4">
+          <div className="mt-4">
             <div className="space-y-1">
               <div className="text-xs text-muted-foreground">Total Contributions</div>
               <div className="text-xl font-bold">2,543</div>
-            </div>
-            <div className="space-y-1">
-              <div className="text-xs text-muted-foreground">Current Streak</div>
-              <div className="text-xl font-bold">24 days</div>
             </div>
           </div>
         </div>

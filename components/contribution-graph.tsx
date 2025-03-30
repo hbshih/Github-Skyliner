@@ -18,7 +18,6 @@ export function ContributionGraph({ username, height = 400 }: ContributionGraphP
   const [error, setError] = useState<string | null>(null)
   const [stats, setStats] = useState({
     total: 0,
-    streak: 0,
     maxStreak: 0,
   })
 
@@ -53,8 +52,7 @@ export function ContributionGraph({ username, height = 400 }: ContributionGraphP
         setContributions(data.contributionDays)
         setStats({
           total: data.totalContributions || 0,
-          streak: data.currentStreak || 0,
-          maxStreak: data.longestStreak || 0,
+          maxStreak: data.maxStreak || 0,
         })
         setError(null)
       } catch (err) {
@@ -101,14 +99,10 @@ export function ContributionGraph({ username, height = 400 }: ContributionGraphP
         <CalendarView contributions={contributions} height={height} {...commonProps} />
       )}
 
-      <div className="grid grid-cols-3 gap-4">
+      <div className="grid grid-cols-2 gap-4">
         <div className="rounded-lg border border-border/50 bg-secondary p-3">
           <div className="text-sm text-muted-foreground">Total Contributions</div>
           <div className="text-2xl font-bold">{stats.total.toLocaleString()}</div>
-        </div>
-        <div className="rounded-lg border border-border/50 bg-secondary p-3">
-          <div className="text-sm text-muted-foreground">Current Streak</div>
-          <div className="text-2xl font-bold">{stats.streak} days</div>
         </div>
         <div className="rounded-lg border border-border/50 bg-secondary p-3">
           <div className="text-sm text-muted-foreground">Longest Streak</div>

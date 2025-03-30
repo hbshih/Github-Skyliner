@@ -146,8 +146,7 @@ export const getContributions = cache(
   ): Promise<{
     contributionDays: ContributionDay[]
     totalContributions: number
-    currentStreak: number
-    longestStreak: number
+    maxStreak: number
   }> => {
     // GraphQL query to fetch contribution calendar data
     const query = `
@@ -201,24 +200,9 @@ export const getContributions = cache(
       })
     })
 
-    // Calculate streaks
-    let currentStreak = 0
+    // Calculate longest streak
     let longestStreak = 0
     let tempStreak = 0
-
-    // Sort by date (newest first) to calculate current streak
-    const sortedDays = [...contributionDays].sort((a, b) => new Date(b.date).getTime() - new Date(a.date).getTime())
-
-    // Calculate current streak (consecutive days with contributions, starting from today)
-    for (const day of sortedDays) {
-      if (day.count > 0) {
-        currentStreak++
-      } else {
-        break
-      }
-    }
-
-    // Calculate longest streak
     for (const day of contributionDays) {
       if (day.count > 0) {
         tempStreak++
@@ -231,8 +215,7 @@ export const getContributions = cache(
     return {
       contributionDays,
       totalContributions,
-      currentStreak,
-      longestStreak,
+      maxStreak: longestStreak,
     }
   },
 )
