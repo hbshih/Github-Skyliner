@@ -41,22 +41,12 @@ export default function EmbedPage() {
   const {
     setVisualizationType,
     setColorPalette,
-    setIs3DEnabled,
-    setShowDataLabels,
-    setSortData,
-    setChartBorder,
-    setChartBackground,
-    setTextSize,
-    setFontStyle,
     setShowLegend,
-    setLegendPosition,
-    setBarChartStyle,
-    setHeadlineNumber,
-    setStartFromZero,
-    setUseCurvedLines,
     setAnimateCharts,
-    chartBackground,
-    chartBorder,
+    setSkylineBuildingStyle,
+    setSkylineReflections,
+    setSkylineParticles,
+    setSkylineRotationSpeed
   } = useVisualization()
 
   // Set mounted state to true after component mounts
@@ -90,58 +80,13 @@ export default function EmbedPage() {
       setColorPalette(colorPaletteParam)
     }
 
-    if (is3DEnabledParam !== null) {
-      setIs3DEnabled(is3DEnabledParam === "true")
-    }
-
-    if (showDataLabelsParam !== null) {
-      setShowDataLabels(showDataLabelsParam === "true")
-    }
-
-
-    if (sortDataParam !== null) {
-      setSortData(sortDataParam === "true")
-    }
-
-    if (chartBorderParam) {
-      setChartBorder(chartBorderParam)
-    }
-
-    if (chartBackgroundParam) {
-      setChartBackground(chartBackgroundParam)
-    }
-
-    if (textSizeParam) {
-      setTextSize(textSizeParam)
-    }
-
-    if (fontStyleParam) {
-      setFontStyle(fontStyleParam)
-    }
+    // These parameters are no longer supported in the current version
 
     if (showLegendParam !== null) {
       setShowLegend(showLegendParam === "true")
     }
 
-    if (legendPositionParam) {
-      setLegendPosition(legendPositionParam)
-    }
-
-    if (barChartStyleParam) {
-      setBarChartStyle(barChartStyleParam)
-    }
-
-    if (headlineNumberParam) {
-      setHeadlineNumber(headlineNumberParam)
-    }
-
-    if (startFromZeroParam !== null) {
-      setStartFromZero(startFromZeroParam === "true")
-    }
-
-    if (useCurvedLinesParam !== null) {
-      setUseCurvedLines(useCurvedLinesParam === "true")
-    }
+    // These parameters are no longer supported in the current version
 
     if (animateChartsParam !== null) {
       setAnimateCharts(animateChartsParam === "true")
@@ -149,35 +94,11 @@ export default function EmbedPage() {
   }, [
     visualTypeParam,
     colorPaletteParam,
-    is3DEnabledParam,
-    showDataLabelsParam,
-    sortDataParam,
-    chartBorderParam,
-    chartBackgroundParam,
-    textSizeParam,
-    fontStyleParam,
     showLegendParam,
-    legendPositionParam,
-    barChartStyleParam,
-    headlineNumberParam,
-    startFromZeroParam,
-    useCurvedLinesParam,
     animateChartsParam,
     setVisualizationType,
     setColorPalette,
-    setIs3DEnabled,
-    setShowDataLabels,
-    setSortData,
-    setChartBorder,
-    setChartBackground,
-    setTextSize,
-    setFontStyle,
     setShowLegend,
-    setLegendPosition,
-    setBarChartStyle,
-    setHeadlineNumber,
-    setStartFromZero,
-    setUseCurvedLines,
     setAnimateCharts,
     mounted,
   ])
@@ -239,12 +160,7 @@ export default function EmbedPage() {
   return (
     <div className="p-4">
       <Card
-        className={`
-        border-0 shadow-none 
-        ${chartBackground === "transparent" ? "bg-transparent" : "bg-card/50"}
-        ${chartBorder === "gradient" ? "chart-border-gradient" : ""}
-        ${chartBorder === "solid" ? "chart-border-solid" : ""}
-      `}
+        className="border-0 shadow-none bg-card/50"
       >
         <CardContent className="px-0 pt-0">
           <div className="flex items-center gap-2">
