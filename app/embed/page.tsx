@@ -24,7 +24,7 @@ export default function EmbedPage() {
   const colorPaletteParam = searchParams?.get("colorPalette") as any
   const is3DEnabledParam = searchParams?.get("is3DEnabled")
   const showDataLabelsParam = searchParams?.get("showDataLabels")
-  const showGridLinesParam = searchParams?.get("showGridLines")
+
   const sortDataParam = searchParams?.get("sortData")
   const chartBorderParam = searchParams?.get("chartBorder")
   const chartBackgroundParam = searchParams?.get("chartBackground")
@@ -43,7 +43,6 @@ export default function EmbedPage() {
     setColorPalette,
     setIs3DEnabled,
     setShowDataLabels,
-    setShowGridLines,
     setSortData,
     setChartBorder,
     setChartBackground,
@@ -99,9 +98,6 @@ export default function EmbedPage() {
       setShowDataLabels(showDataLabelsParam === "true")
     }
 
-    if (showGridLinesParam !== null) {
-      setShowGridLines(showGridLinesParam === "true")
-    }
 
     if (sortDataParam !== null) {
       setSortData(sortDataParam === "true")
@@ -155,7 +151,6 @@ export default function EmbedPage() {
     colorPaletteParam,
     is3DEnabledParam,
     showDataLabelsParam,
-    showGridLinesParam,
     sortDataParam,
     chartBorderParam,
     chartBackgroundParam,
@@ -172,7 +167,6 @@ export default function EmbedPage() {
     setColorPalette,
     setIs3DEnabled,
     setShowDataLabels,
-    setShowGridLines,
     setSortData,
     setChartBorder,
     setChartBackground,

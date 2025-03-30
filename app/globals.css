@@ -609,3 +609,25 @@ h6 {
   }
 }
 
+/* Calendar cell animation */
+.calendar-cell-animate {
+  animation: calendarPulse 2s infinite alternate;
+  transition: transform 0.3s ease;
+}
+
+.calendar-cell-animate:hover {
+  animation-play-state: paused;
+  transform: scale(1.2);
+}
+
+@keyframes calendarPulse {
+  0% {
+    transform: scale(1);
+    filter: brightness(1);
+  }
+  100% {
+    transform: scale(1.15);
+    filter: brightness(1.2);
+  }
+}
+

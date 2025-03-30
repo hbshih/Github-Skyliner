@@ -66,8 +66,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
   const {
     colorPalette,
     setColorPalette,
-    showGridLines,
-    setShowGridLines,
+
     showLegend,
     setShowLegend,
     animateCharts,
@@ -131,7 +130,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
   ]
 
   const copyEmbedCode = () => {
-    const embedCode = `<iframe src="${window.location.origin}/embed?username=${username}&colorPalette=${colorPalette}&showGridLines=${showGridLines}&showLegend=${showLegend}&animateCharts=${animateCharts}" width="100%" height="500" frameborder="0"></iframe>`
+    const embedCode = `<iframe src="${window.location.origin}/embed?username=${username}&colorPalette=${colorPalette}&showLegend=${showLegend}&animateCharts=${animateCharts}" width="100%" height="500" frameborder="0"></iframe>`
     navigator.clipboard.writeText(embedCode)
     toast({
       title: "Copied!",
@@ -642,12 +641,6 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
                   <Switch id="show-legend" checked={showLegend} onCheckedChange={setShowLegend} />
                 </div>
 
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="show-grid" className="text-sm">
-                    Show Grid Lines
-                  </Label>
-                  <Switch id="show-grid" checked={showGridLines} onCheckedChange={setShowGridLines} />
-                </div>
 
                 <div className="flex items-center justify-between">
                   <Label htmlFor="animate" className="text-sm">

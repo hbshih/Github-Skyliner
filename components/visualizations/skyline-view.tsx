@@ -19,7 +19,7 @@ interface SkylineViewProps {
   contributions: ContributionDay[]
   height?: number
   username?: string
-  showGridLines?: boolean
+
   showLegend?: boolean
   animate?: boolean
 }
@@ -539,20 +539,12 @@ function TimeOfDayLighting({ timeOfDay }: { timeOfDay: string }) {
 }
 
 // Grid component for the synthwave floor
-function SynthwaveGrid({ colors, showGridLines = true }: { colors: SkylineColors; showGridLines?: boolean }) {
-  const gridRef = useRef<THREE.GridHelper>(null)
-
-  useFrame(({ clock }) => {
-    if (gridRef.current) {
-      // Subtle animation for the grid
-      gridRef.current.position.z = Math.sin(clock.getElapsedTime() * 0.1) * 0.2
-    }
-  })
+function SynthwaveGrid({ colors }: { colors: SkylineColors }) {
+  // Grid animation removed as grid is no longer displayed
 
   return (
     <>
-      {/* Horizontal grid */}
-      {showGridLines && <gridHelper ref={gridRef} args={[100, 50, colors.grid, colors.grid]} position={[0, -0.1, 0]} />}
+      {/* Grid removed as per user request */}
 
       {/* Glowing floor */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]}>
@@ -1000,7 +992,7 @@ export function SkylineView({
   contributions,
   height = 400,
   username,
-  showGridLines = true,
+
   showLegend = true,
   animate = true,
 }: SkylineViewProps) {
@@ -1047,7 +1039,7 @@ export function SkylineView({
         <RotationIndicator />
 
         {/* Scene elements */}
-        <SynthwaveGrid colors={colors} showGridLines={showGridLines} />
+        <SynthwaveGrid colors={colors} />
         <ContributionBuildings
           data={contributions}
           colorPalette={colorPalette}

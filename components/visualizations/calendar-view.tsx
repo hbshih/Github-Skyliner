@@ -124,7 +124,7 @@ export function CalendarView({
                               ${useGradient ? `contribution-gradient-${day.level || 0}` : `contribution-level-${day.level || 0}`}
                               ${is3DEnabled ? "cell-3d" : ""}
                               ${colorPalette === "holographic" ? "holographic-effect" : ""}
-                              ${animate ? "animate-in" : ""}
+                              ${animate ? "calendar-cell-animate" : ""}
                             `}
                             onMouseEnter={() => setHoveredDay(day)}
                             onMouseLeave={() => setHoveredDay(null)}

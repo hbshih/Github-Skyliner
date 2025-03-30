@@ -53,8 +53,7 @@ interface VisualizationContextType {
   setColorPalette: (palette: ColorPalette) => void
   getContributionColor: (level: number) => string
   applyColorPalette: () => void
-  showGridLines: boolean
-  setShowGridLines: (show: boolean) => void
+
   showLegend: boolean
   setShowLegend: (show: boolean) => void
   animateCharts: boolean
@@ -81,8 +80,7 @@ const VisualizationContext = createContext<VisualizationContextType>({
   setColorPalette: () => {},
   getContributionColor: () => "",
   applyColorPalette: () => {},
-  showGridLines: false,
-  setShowGridLines: () => {},
+
   showLegend: true,
   setShowLegend: () => {},
   animateCharts: true,
@@ -106,7 +104,6 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
   const [visualizationType, setVisualizationType] = useState<VisualizationType>("skyline")
   const [colorPalette, setColorPalette] = useState<ColorPalette>("default")
   const [isClient, setIsClient] = useState(false)
-  const [showGridLines, setShowGridLines] = useState(false)
   const [showLegend, setShowLegend] = useState(true)
   const [animateCharts, setAnimateCharts] = useState(true)
   const [contributions, setContributions] = useState<ContributionDay[]>([])
@@ -170,7 +167,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem("visualization-type", visualizationType)
       localStorage.setItem("color-palette", colorPalette)
-      localStorage.setItem("show-grid-lines", showGridLines.toString())
+
       localStorage.setItem("show-legend", showLegend.toString())
       localStorage.setItem("animate-charts", animateCharts.toString())
 
@@ -186,7 +183,6 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
     colorPalette,
     visualizationType,
     isClient,
-    showGridLines,
     showLegend,
     animateCharts,
     skylineBuildingStyle,
@@ -207,7 +203,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
         setVisualizationType(savedType)
       }
 
-      const savedGridLines = localStorage.getItem("show-grid-lines")
+
       const savedShowLegend = localStorage.getItem("show-legend")
       const savedAnimateCharts = localStorage.getItem("animate-charts")
 
@@ -217,9 +213,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
       const savedSkylineParticles = localStorage.getItem("skyline-particles")
       const savedSkylineRotationSpeed = localStorage.getItem("skyline-rotation-speed")
 
-      if (savedGridLines !== null) {
-        setShowGridLines(savedGridLines === "true")
-      }
+
 
       if (savedShowLegend !== null) {
         setShowLegend(savedShowLegend === "true")
@@ -260,8 +254,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
         setColorPalette,
         getContributionColor,
         applyColorPalette,
-        showGridLines,
-        setShowGridLines,
+
         showLegend,
         setShowLegend,
         animateCharts,
