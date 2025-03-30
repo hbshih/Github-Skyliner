@@ -53,35 +53,15 @@ interface VisualizationContextType {
   setColorPalette: (palette: ColorPalette) => void
   getContributionColor: (level: number) => string
   applyColorPalette: () => void
-  is3DEnabled: boolean
-  setIs3DEnabled: (enabled: boolean) => void
-  showDataLabels: boolean
-  setShowDataLabels: (show: boolean) => void
   showGridLines: boolean
   setShowGridLines: (show: boolean) => void
-  sortData: boolean
-  setSortData: (sort: boolean) => void
-  chartBorder: string
-  setChartBorder: (border: string) => void
-  chartBackground: string
-  setChartBackground: (bg: string) => void
   showLegend: boolean
   setShowLegend: (show: boolean) => void
   animateCharts: boolean
   setAnimateCharts: (animate: boolean) => void
   // Skyline specific options
-  skylineWeather: string
-  setSkylineWeather: (weather: string) => void
-  skylineTimeOfDay: string
-  setSkylineTimeOfDay: (time: string) => void
-  skylineEnvironment: string
-  setSkylineEnvironment: (env: string) => void
-  skylineFogDensity: number
-  setSkylineFogDensity: (density: number) => void
   skylineBuildingStyle: string
   setSkylineBuildingStyle: (style: string) => void
-  skylineCityStyle: string
-  setSkylineCityStyle: (style: string) => void
   skylineReflections: boolean
   setSkylineReflections: (enabled: boolean) => void
   skylineParticles: boolean
@@ -101,31 +81,13 @@ const VisualizationContext = createContext<VisualizationContextType>({
   setColorPalette: () => {},
   getContributionColor: () => "",
   applyColorPalette: () => {},
-  is3DEnabled: false,
-  setIs3DEnabled: () => {},
-  showDataLabels: false,
-  setShowDataLabels: () => {},
   showGridLines: false,
   setShowGridLines: () => {},
-  sortData: false,
-  setSortData: () => {},
-  chartBorder: "none",
-  setChartBorder: () => {},
-  chartBackground: "solid",
-  setChartBackground: () => {},
   showLegend: true,
   setShowLegend: () => {},
   animateCharts: true,
   setAnimateCharts: () => {},
   // Skyline specific options
-  skylineWeather: "clear",
-  setSkylineWeather: () => {},
-  skylineTimeOfDay: "sunrise",
-  setSkylineTimeOfDay: () => {},
-  skylineEnvironment: "city",
-  setSkylineEnvironment: () => {},
-  skylineFogDensity: 30,
-  setSkylineFogDensity: () => {},
   skylineBuildingStyle: "modern",
   setSkylineBuildingStyle: () => {},
   skylineReflections: true,
@@ -134,8 +96,6 @@ const VisualizationContext = createContext<VisualizationContextType>({
   setSkylineParticles: () => {},
   skylineRotationSpeed: 0.5,
   setSkylineRotationSpeed: () => {},
-  skylineCityStyle: "stylized",
-  setSkylineCityStyle: () => {},
   // Contributions data
   contributions: [],
   setContributions: () => {},
@@ -146,23 +106,13 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
   const [visualizationType, setVisualizationType] = useState<VisualizationType>("skyline")
   const [colorPalette, setColorPalette] = useState<ColorPalette>("default")
   const [isClient, setIsClient] = useState(false)
-  const [is3DEnabled, setIs3DEnabled] = useState(false)
-  const [showDataLabels, setShowDataLabels] = useState(false)
   const [showGridLines, setShowGridLines] = useState(false)
-  const [sortData, setSortData] = useState(false)
-  const [chartBorder, setChartBorder] = useState("none")
-  const [chartBackground, setChartBackground] = useState("solid")
   const [showLegend, setShowLegend] = useState(true)
   const [animateCharts, setAnimateCharts] = useState(true)
   const [contributions, setContributions] = useState<ContributionDay[]>([])
 
   // Skyline specific options
-  const [skylineWeather, setSkylineWeather] = useState("clear")
-  const [skylineTimeOfDay, setSkylineTimeOfDay] = useState("sunrise")
-  const [skylineEnvironment, setSkylineEnvironment] = useState("city")
-  const [skylineFogDensity, setSkylineFogDensity] = useState(30)
   const [skylineBuildingStyle, setSkylineBuildingStyle] = useState("modern")
-  const [skylineCityStyle, setSkylineCityStyle] = useState("stylized")
   const [skylineReflections, setSkylineReflections] = useState(true)
   const [skylineParticles, setSkylineParticles] = useState(true)
   const [skylineRotationSpeed, setSkylineRotationSpeed] = useState(0.5)
@@ -220,22 +170,12 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
     try {
       localStorage.setItem("visualization-type", visualizationType)
       localStorage.setItem("color-palette", colorPalette)
-      localStorage.setItem("3d-enabled", is3DEnabled.toString())
-      localStorage.setItem("show-data-labels", showDataLabels.toString())
       localStorage.setItem("show-grid-lines", showGridLines.toString())
-      localStorage.setItem("sort-data", sortData.toString())
-      localStorage.setItem("chart-border", chartBorder)
-      localStorage.setItem("chart-background", chartBackground)
       localStorage.setItem("show-legend", showLegend.toString())
       localStorage.setItem("animate-charts", animateCharts.toString())
 
       // Skyline specific options
-      localStorage.setItem("skyline-weather", skylineWeather)
-      localStorage.setItem("skyline-time-of-day", skylineTimeOfDay)
-      localStorage.setItem("skyline-environment", skylineEnvironment)
-      localStorage.setItem("skyline-fog-density", skylineFogDensity.toString())
       localStorage.setItem("skyline-building-style", skylineBuildingStyle)
-      localStorage.setItem("skyline-city-style", skylineCityStyle)
       localStorage.setItem("skyline-reflections", skylineReflections.toString())
       localStorage.setItem("skyline-particles", skylineParticles.toString())
       localStorage.setItem("skyline-rotation-speed", skylineRotationSpeed.toString())
@@ -245,21 +185,11 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
   }, [
     colorPalette,
     visualizationType,
-    is3DEnabled,
     isClient,
-    showDataLabels,
     showGridLines,
-    sortData,
-    chartBorder,
-    chartBackground,
     showLegend,
     animateCharts,
-    skylineWeather,
-    skylineTimeOfDay,
-    skylineEnvironment,
-    skylineFogDensity,
     skylineBuildingStyle,
-    skylineCityStyle,
     skylineReflections,
     skylineParticles,
     skylineRotationSpeed,
@@ -277,48 +207,18 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
         setVisualizationType(savedType)
       }
 
-      const saved3DEnabled = localStorage.getItem("3d-enabled")
-      const savedDataLabels = localStorage.getItem("show-data-labels")
       const savedGridLines = localStorage.getItem("show-grid-lines")
-      const savedSortData = localStorage.getItem("sort-data")
-      const savedChartBorder = localStorage.getItem("chart-border")
-      const savedChartBackground = localStorage.getItem("chart-background")
       const savedShowLegend = localStorage.getItem("show-legend")
       const savedAnimateCharts = localStorage.getItem("animate-charts")
 
       // Skyline specific options
-      const savedSkylineWeather = localStorage.getItem("skyline-weather")
-      const savedSkylineTimeOfDay = localStorage.getItem("skyline-time-of-day")
-      const savedSkylineEnvironment = localStorage.getItem("skyline-environment")
-      const savedSkylineFogDensity = localStorage.getItem("skyline-fog-density")
       const savedSkylineBuildingStyle = localStorage.getItem("skyline-building-style")
-      const savedSkylineCityStyle = localStorage.getItem("skyline-city-style")
       const savedSkylineReflections = localStorage.getItem("skyline-reflections")
       const savedSkylineParticles = localStorage.getItem("skyline-particles")
       const savedSkylineRotationSpeed = localStorage.getItem("skyline-rotation-speed")
 
-      if (saved3DEnabled !== null) {
-        setIs3DEnabled(saved3DEnabled === "true")
-      }
-
-      if (savedDataLabels !== null) {
-        setShowDataLabels(savedDataLabels === "true")
-      }
-
       if (savedGridLines !== null) {
         setShowGridLines(savedGridLines === "true")
-      }
-
-      if (savedSortData !== null) {
-        setSortData(savedSortData === "true")
-      }
-
-      if (savedChartBorder) {
-        setChartBorder(savedChartBorder)
-      }
-
-      if (savedChartBackground) {
-        setChartBackground(savedChartBackground)
       }
 
       if (savedShowLegend !== null) {
@@ -330,28 +230,8 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
       }
 
       // Skyline specific options
-      if (savedSkylineWeather) {
-        setSkylineWeather(savedSkylineWeather)
-      }
-
-      if (savedSkylineTimeOfDay) {
-        setSkylineTimeOfDay(savedSkylineTimeOfDay)
-      }
-
-      if (savedSkylineEnvironment) {
-        setSkylineEnvironment(savedSkylineEnvironment)
-      }
-
-      if (savedSkylineFogDensity !== null) {
-        setSkylineFogDensity(Number.parseInt(savedSkylineFogDensity, 10))
-      }
-
       if (savedSkylineBuildingStyle) {
         setSkylineBuildingStyle(savedSkylineBuildingStyle)
-      }
-
-      if (savedSkylineCityStyle) {
-        setSkylineCityStyle(savedSkylineCityStyle)
       }
 
       if (savedSkylineReflections !== null) {
@@ -380,35 +260,15 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
         setColorPalette,
         getContributionColor,
         applyColorPalette,
-        is3DEnabled,
-        setIs3DEnabled,
-        showDataLabels,
-        setShowDataLabels,
         showGridLines,
         setShowGridLines,
-        sortData,
-        setSortData,
-        chartBorder,
-        setChartBorder,
-        chartBackground,
-        setChartBackground,
         showLegend,
         setShowLegend,
         animateCharts,
         setAnimateCharts,
         // Skyline specific options
-        skylineWeather,
-        setSkylineWeather,
-        skylineTimeOfDay,
-        setSkylineTimeOfDay,
-        skylineEnvironment,
-        setSkylineEnvironment,
-        skylineFogDensity,
-        setSkylineFogDensity,
         skylineBuildingStyle,
         setSkylineBuildingStyle,
-        skylineCityStyle,
-        setSkylineCityStyle,
         skylineReflections,
         setSkylineReflections,
         skylineParticles,

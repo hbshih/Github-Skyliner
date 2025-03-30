@@ -15,18 +15,7 @@ import {
   FileImage,
   FileIcon as FilePdf,
   FileImageIcon as FileSvg,
-  Cloud,
-  CloudRain,
-  CloudSnow,
-  CloudSun,
-  Sunset,
-  Sunrise,
-  Moon,
-  Sun,
-  Trees,
-  Building,
-  Wind,
-  Umbrella,
+
   Grid3X3,
   Mountain,
   Upload,
@@ -77,29 +66,12 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
   const {
     colorPalette,
     setColorPalette,
-    is3DEnabled,
-    setIs3DEnabled,
-    showDataLabels,
-    setShowDataLabels,
     showGridLines,
     setShowGridLines,
-    chartBorder,
-    setChartBorder,
-    chartBackground,
-    setChartBackground,
     showLegend,
     setShowLegend,
     animateCharts,
     setAnimateCharts,
-    // Skyline specific options
-    skylineWeather,
-    setSkylineWeather,
-    skylineTimeOfDay,
-    setSkylineTimeOfDay,
-    skylineEnvironment,
-    setSkylineEnvironment,
-    skylineFogDensity,
-    setSkylineFogDensity,
     skylineBuildingStyle,
     setSkylineBuildingStyle,
     skylineReflections,
@@ -108,8 +80,6 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
     setSkylineParticles,
     skylineRotationSpeed,
     setSkylineRotationSpeed,
-    skylineCityStyle,
-    setSkylineCityStyle,
     visualizationType,
     setVisualizationType,
     setContributions,
@@ -142,39 +112,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
     { value: "sapphire", label: "Sapphire", description: "Deep blue gradient" },
   ]
 
-  const chartBorders = [
-    { value: "none", label: "None" },
-    { value: "solid", label: "Solid" },
-    { value: "gradient", label: "Gradient" },
-  ]
 
-  const chartBackgrounds = [
-    { value: "solid", label: "Solid" },
-    { value: "transparent", label: "Transparent" },
-  ]
-
-  const weatherOptions = [
-    { value: "clear", label: "Clear", icon: <CloudSun className="h-4 w-4" /> },
-    { value: "cloudy", label: "Cloudy", icon: <Cloud className="h-4 w-4" /> },
-    { value: "rainy", label: "Rainy", icon: <CloudRain className="h-4 w-4" /> },
-    { value: "snowy", label: "Snowy", icon: <CloudSnow className="h-4 w-4" /> },
-    { value: "foggy", label: "Foggy", icon: <Wind className="h-4 w-4" /> },
-    { value: "stormy", label: "Stormy", icon: <Umbrella className="h-4 w-4" /> },
-  ]
-
-  const timeOfDayOptions = [
-    { value: "day", label: "Day", icon: <Sun className="h-4 w-4" /> },
-    { value: "sunset", label: "Sunset", icon: <Sunset className="h-4 w-4" /> },
-    { value: "night", label: "Night", icon: <Moon className="h-4 w-4" /> },
-    { value: "sunrise", label: "Sunrise", icon: <Sunrise className="h-4 w-4" /> },
-  ]
-
-  const environmentOptions = [
-    { value: "city", label: "City", icon: <Building className="h-4 w-4" /> },
-    { value: "nature", label: "Nature", icon: <Trees className="h-4 w-4" /> },
-    { value: "desert", label: "Desert", icon: <Sun className="h-4 w-4" /> },
-    { value: "space", label: "Space", icon: <Moon className="h-4 w-4" /> },
-  ]
 
   const buildingStyleOptions = [
     { value: "modern", label: "Modern" },
@@ -193,7 +131,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
   ]
 
   const copyEmbedCode = () => {
-    const embedCode = `<iframe src="${window.location.origin}/embed?username=${username}&colorPalette=${colorPalette}&is3DEnabled=${is3DEnabled}&showDataLabels=${showDataLabels}&showGridLines=${showGridLines}&chartBorder=${chartBorder}&chartBackground=${chartBackground}&showLegend=${showLegend}&animateCharts=${animateCharts}&skylineWeather=${skylineWeather}&skylineTimeOfDay=${skylineTimeOfDay}&skylineEnvironment=${skylineEnvironment}" width="100%" height="500" frameborder="0"></iframe>`
+    const embedCode = `<iframe src="${window.location.origin}/embed?username=${username}&colorPalette=${colorPalette}&showGridLines=${showGridLines}&showLegend=${showLegend}&animateCharts=${animateCharts}" width="100%" height="500" frameborder="0"></iframe>`
     navigator.clipboard.writeText(embedCode)
     toast({
       title: "Copied!",
@@ -202,7 +140,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
   }
 
   const copyShareLink = () => {
-    const shareUrl = `${window.location.origin}/profile?username=${username}&colorPalette=${colorPalette}&skylineWeather=${skylineWeather}&skylineTimeOfDay=${skylineTimeOfDay}&skylineEnvironment=${skylineEnvironment}`
+    const shareUrl = `${window.location.origin}/profile?username=${username}&colorPalette=${colorPalette}`
     navigator.clipboard.writeText(shareUrl)
     toast({
       title: "Copied!",
@@ -401,7 +339,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
   }
 
   const shareToSocialMedia = (platform: string) => {
-    const shareUrl = `${window.location.origin}/profile?username=${username}&colorPalette=${colorPalette}&skylineWeather=${skylineWeather}&skylineTimeOfDay=${skylineTimeOfDay}&skylineEnvironment=${skylineEnvironment}`
+    const shareUrl = `${window.location.origin}/profile?username=${username}&colorPalette=${colorPalette}`
     let shareLink = ""
 
     switch (platform) {
@@ -556,210 +494,13 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
 
       {/* Content */}
       <div className="flex-1 overflow-y-auto">
-        <Tabs defaultValue="skyline" className="w-full">
-          <TabsList className="grid grid-cols-3 w-full">
-            <TabsTrigger value="skyline">Skyline</TabsTrigger>
+        <Tabs defaultValue="style" className="w-full">
+          <TabsList className="grid grid-cols-2 w-full">
             <TabsTrigger value="style">Style</TabsTrigger>
             <TabsTrigger value="share">Share</TabsTrigger>
           </TabsList>
 
-          {/* Skyline Tab */}
-          <TabsContent value="skyline" className="p-4 space-y-6">
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium">Weather</h4>
-              <div className="grid grid-cols-3 gap-2">
-                {weatherOptions.map((option) => (
-                  <TooltipProvider key={option.value}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant={skylineWeather === option.value ? "default" : "outline"}
-                          size="sm"
-                          className="flex flex-col h-auto py-3 gap-1 hover:bg-primary/10 transition-colors"
-                          onClick={() => setSkylineWeather(option.value)}
-                        >
-                          {option.icon}
-                          <span className="text-xs">{option.label}</span>
-                          {skylineWeather === option.value && (
-                            <div className="absolute top-1 right-1">
-                              <div className="h-2 w-2 rounded-full bg-primary"></div>
-                            </div>
-                          )}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{option.label} weather</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ))}
-              </div>
-            </div>
 
-            <Separator />
-
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium">Time of Day</h4>
-              <div className="grid grid-cols-2 gap-2">
-                {timeOfDayOptions.map((option) => (
-                  <TooltipProvider key={option.value}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant={skylineTimeOfDay === option.value ? "default" : "outline"}
-                          size="sm"
-                          className="flex flex-col h-auto py-3 gap-1 hover:bg-primary/10 transition-colors"
-                          onClick={() => setSkylineTimeOfDay(option.value)}
-                        >
-                          {option.icon}
-                          <span className="text-xs">{option.label}</span>
-                          {skylineTimeOfDay === option.value && (
-                            <div className="absolute top-1 right-1">
-                              <div className="h-2 w-2 rounded-full bg-primary"></div>
-                            </div>
-                          )}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{option.label} time</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium">Environment</h4>
-              <div className="grid grid-cols-2 gap-2">
-                {environmentOptions.map((option) => (
-                  <TooltipProvider key={option.value}>
-                    <Tooltip>
-                      <TooltipTrigger asChild>
-                        <Button
-                          variant={skylineEnvironment === option.value ? "default" : "outline"}
-                          size="sm"
-                          className="flex flex-col h-auto py-3 gap-1 hover:bg-primary/10 transition-colors"
-                          onClick={() => setSkylineEnvironment(option.value)}
-                        >
-                          {option.icon}
-                          <span className="text-xs">{option.label}</span>
-                          {skylineEnvironment === option.value && (
-                            <div className="absolute top-1 right-1">
-                              <div className="h-2 w-2 rounded-full bg-primary"></div>
-                            </div>
-                          )}
-                        </Button>
-                      </TooltipTrigger>
-                      <TooltipContent>
-                        <p>{option.label} environment</p>
-                      </TooltipContent>
-                    </Tooltip>
-                  </TooltipProvider>
-                ))}
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-3">
-              <h4 className="text-sm font-medium">Building Style</h4>
-              <RadioGroup
-                value={skylineBuildingStyle}
-                onValueChange={(value) => setSkylineBuildingStyle(value)}
-                className="flex flex-col gap-2"
-              >
-                {buildingStyleOptions.map((option) => (
-                  <div key={option.value} className="flex items-center space-x-2">
-                    <RadioGroupItem value={option.value} id={`building-${option.value}`} />
-                    <Label htmlFor={`building-${option.value}`} className="text-sm">
-                      {option.label}
-                    </Label>
-                  </div>
-                ))}
-              </RadioGroup>
-            </div>
-
-            {skylineEnvironment === "city" && (
-              <>
-                <Separator />
-
-                <div className="space-y-3">
-                  <h4 className="text-sm font-medium">City Style</h4>
-                  <RadioGroup
-                    value={skylineCityStyle}
-                    onValueChange={(value) => setSkylineCityStyle(value)}
-                    className="flex flex-col gap-2"
-                  >
-                    {cityStyleOptions.map((option) => (
-                      <div key={option.value} className="flex items-center space-x-2">
-                        <RadioGroupItem value={option.value} id={`city-${option.value}`} />
-                        <Label htmlFor={`city-${option.value}`} className="text-sm">
-                          {option.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-              </>
-            )}
-
-            <Separator />
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="fog-density" className="text-sm">
-                  Fog Density
-                </Label>
-                <span className="text-xs text-muted-foreground">{skylineFogDensity}%</span>
-              </div>
-              <Slider
-                id="fog-density"
-                min={0}
-                max={100}
-                step={5}
-                value={[skylineFogDensity]}
-                onValueChange={(value) => setSkylineFogDensity(value[0])}
-              />
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="rotation-speed" className="text-sm">
-                  Rotation Speed
-                </Label>
-                <span className="text-xs text-muted-foreground">{skylineRotationSpeed}x</span>
-              </div>
-              <Slider
-                id="rotation-speed"
-                min={0}
-                max={2}
-                step={0.1}
-                value={[skylineRotationSpeed]}
-                onValueChange={(value) => setSkylineRotationSpeed(value[0])}
-              />
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="reflections" className="text-sm">
-                  Reflections
-                </Label>
-                <Switch id="reflections" checked={skylineReflections} onCheckedChange={setSkylineReflections} />
-              </div>
-            </div>
-
-            <div className="space-y-3">
-              <div className="flex items-center justify-between">
-                <Label htmlFor="particles" className="text-sm">
-                  Particles
-                </Label>
-                <Switch id="particles" checked={skylineParticles} onCheckedChange={setSkylineParticles} />
-              </div>
-            </div>
-          </TabsContent>
 
           {/* Style Tab */}
           <TabsContent value="style" className="p-4 space-y-6">
@@ -783,7 +524,68 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
                 ))}
               </div>
             </div>
+
             <Separator />
+
+            {visualizationType === "skyline" && (
+              <>
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium">Building Style</h4>
+                  <RadioGroup
+                    value={skylineBuildingStyle}
+                    onValueChange={(value) => setSkylineBuildingStyle(value)}
+                    className="flex flex-col gap-2"
+                  >
+                    {buildingStyleOptions.map((option) => (
+                      <div key={option.value} className="flex items-center space-x-2">
+                        <RadioGroupItem value={option.value} id={`building-${option.value}`} />
+                        <Label htmlFor={`building-${option.value}`} className="text-sm">
+                          {option.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="rotation-speed" className="text-sm">
+                      Rotation Speed
+                    </Label>
+                    <span className="text-xs text-muted-foreground">{skylineRotationSpeed}x</span>
+                  </div>
+                  <Slider
+                    id="rotation-speed"
+                    min={0}
+                    max={2}
+                    step={0.1}
+                    value={[skylineRotationSpeed]}
+                    onValueChange={(value) => setSkylineRotationSpeed(value[0])}
+                  />
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="reflections" className="text-sm">
+                      Reflections
+                    </Label>
+                    <Switch id="reflections" checked={skylineReflections} onCheckedChange={setSkylineReflections} />
+                  </div>
+                </div>
+
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Label htmlFor="particles" className="text-sm">
+                      Particles
+                    </Label>
+                    <Switch id="particles" checked={skylineParticles} onCheckedChange={setSkylineParticles} />
+                  </div>
+                </div>
+              </>
+            )}
+
             <div className="space-y-3">
               <h4 className="text-sm font-medium">Color Palette</h4>
               <div className="grid grid-cols-2 gap-2 max-h-[300px] overflow-y-auto pr-1">
@@ -848,68 +650,10 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
                 </div>
 
                 <div className="flex items-center justify-between">
-                  <Label htmlFor="show-labels" className="text-sm">
-                    Show Data Labels
-                  </Label>
-                  <Switch id="show-labels" checked={showDataLabels} onCheckedChange={setShowDataLabels} />
-                </div>
-
-                <div className="flex items-center justify-between">
                   <Label htmlFor="animate" className="text-sm">
                     Animate
                   </Label>
                   <Switch id="animate" checked={animateCharts} onCheckedChange={setAnimateCharts} />
-                </div>
-
-                <div className="flex items-center justify-between">
-                  <Label htmlFor="3d-effects" className="text-sm">
-                    3D Effects
-                  </Label>
-                  <Switch id="3d-effects" checked={is3DEnabled} onCheckedChange={setIs3DEnabled} />
-                </div>
-              </div>
-            </div>
-
-            <Separator />
-
-            <div className="space-y-4">
-              <h4 className="text-sm font-medium">Container</h4>
-
-              <div className="space-y-3">
-                <div className="space-y-2">
-                  <Label className="text-sm">Background</Label>
-                  <RadioGroup
-                    value={chartBackground}
-                    onValueChange={(value) => setChartBackground(value)}
-                    className="flex gap-3"
-                  >
-                    {chartBackgrounds.map((bg) => (
-                      <div key={bg.value} className="flex items-center space-x-2">
-                        <RadioGroupItem value={bg.value} id={`bg-${bg.value}`} />
-                        <Label htmlFor={`bg-${bg.value}`} className="text-sm">
-                          {bg.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
-                </div>
-
-                <div className="space-y-2">
-                  <Label className="text-sm">Border</Label>
-                  <RadioGroup
-                    value={chartBorder}
-                    onValueChange={(value) => setChartBorder(value)}
-                    className="flex gap-3"
-                  >
-                    {chartBorders.map((border) => (
-                      <div key={border.value} className="flex items-center space-x-2">
-                        <RadioGroupItem value={border.value} id={`border-${border.value}`} />
-                        <Label htmlFor={`border-${border.value}`} className="text-sm">
-                          {border.label}
-                        </Label>
-                      </div>
-                    ))}
-                  </RadioGroup>
                 </div>
               </div>
             </div>
@@ -1111,7 +855,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
               <h4 className="text-sm font-medium">Embed Code</h4>
               <Textarea
                 readOnly
-                value={`<iframe src="${typeof window !== "undefined" ? window.location.origin : ""}/embed?username=${username}&colorPalette=${colorPalette}&skylineWeather=${skylineWeather}&skylineTimeOfDay=${skylineTimeOfDay}&skylineEnvironment=${skylineEnvironment}" width="100%" height="500" frameborder="0"></iframe>`}
+                value={`<iframe src="${typeof window !== "undefined" ? window.location.origin : ""}/embed?username=${username}&colorPalette=${colorPalette}" width="100%" height="500" frameborder="0"></iframe>`}
                 className="font-mono text-xs h-24 bg-secondary border-border/50 focus-visible:ring-primary"
               />
               <TooltipProvider>

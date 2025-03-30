@@ -19,13 +19,9 @@ interface SkylineViewProps {
   contributions: ContributionDay[]
   height?: number
   username?: string
-  showDataLabels?: boolean
   showGridLines?: boolean
   showLegend?: boolean
-  is3DEnabled?: boolean
   animate?: boolean
-  border?: string
-  background?: string
 }
 
 // Color theme mapping for skyline elements
@@ -322,7 +318,7 @@ function Particles({ weather }: { weather: string }) {
   return (
     <points ref={particlesRef}>
       <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={particleCount} array={positions} itemSize={3} />
+        <bufferAttribute attach="attributes-position" count={particleCount} array={positions} itemSize={3} args={[positions, 3]} />
       </bufferGeometry>
       <pointsMaterial
         size={weather === "rainy" ? 0.1 : 0.3}
@@ -1004,22 +1000,13 @@ export function SkylineView({
   contributions,
   height = 400,
   username,
-  showDataLabels = false,
   showGridLines = true,
   showLegend = true,
-  is3DEnabled = true,
   animate = true,
-  border = "none",
-  background = "solid",
 }: SkylineViewProps) {
   const {
     colorPalette,
-    skylineWeather,
-    skylineTimeOfDay,
-    skylineEnvironment,
-    skylineFogDensity,
     skylineBuildingStyle,
-    skylineCityStyle,
     skylineReflections,
     skylineParticles,
     skylineRotationSpeed,
@@ -1048,13 +1035,7 @@ export function SkylineView({
     return <div className="text-muted-foreground text-center py-8">No contribution data available</div>
   }
 
-  // Apply border and background styles
-  const containerClasses = `
-    relative overflow-hidden rounded-md
-    ${border === "solid" ? "border border-border" : ""}
-    ${border === "gradient" ? "chart-border-gradient" : ""}
-    ${background === "transparent" ? "bg-transparent" : ""}
-  `
+  const containerClasses = "relative overflow-hidden rounded-md"
 
   // In the return statement, add the hoveredDay state to the ContributionBuildings component
   return (
@@ -1065,19 +1046,6 @@ export function SkylineView({
         <CameraController animate={animate} rotationSpeed={skylineRotationSpeed} />
         <RotationIndicator />
 
-        {/* Time of day lighting */}
-        <TimeOfDayLighting timeOfDay={skylineTimeOfDay} />
-
-        {/* Weather effects */}
-        <WeatherEffects weather={skylineWeather} timeOfDay={skylineTimeOfDay} fogDensity={skylineFogDensity} />
-
-        {/* Environment elements - pass the cityStyle */}
-        <EnvironmentElements
-          environment={skylineEnvironment}
-          timeOfDay={skylineTimeOfDay}
-          cityStyle={skylineCityStyle}
-        />
-
         {/* Scene elements */}
         <SynthwaveGrid colors={colors} showGridLines={showGridLines} />
         <ContributionBuildings
@@ -1085,19 +1053,16 @@ export function SkylineView({
           colorPalette={colorPalette}
           username={localUsername}
           colors={colors}
-          showDataLabels={showDataLabels}
+          showDataLabels={false}
           animate={animate}
-          is3DEnabled={is3DEnabled}
+          is3DEnabled={true}
           buildingStyle={skylineBuildingStyle}
           reflections={skylineReflections}
           setHoveredDay={setHoveredDay}
         />
 
-        {/* Particles if enabled */}
-        {skylineParticles && <Particles weather={skylineWeather} />}
-
         {/* Environment map for reflections */}
-        {skylineReflections && <Environment preset={skylineTimeOfDay === "night" ? "night" : "city"} />}
+        {skylineReflections && <Environment preset="city" />}
       </Canvas>
 
       {/* Overlay gradient for synthwave effect */}

@@ -35,6 +35,10 @@ export default function ProfilePage() {
       return
     }
 
+    // Track when the loading started
+    const loadingStartTime = Date.now()
+    const minimumLoadingTime = 5000 // 5 seconds in milliseconds
+    
     const fetchData = async () => {
       try {
         setLoading(true)
@@ -50,7 +54,19 @@ export default function ProfilePage() {
       } catch (err) {
         setError(`Failed to fetch user data: ${err instanceof Error ? err.message : String(err)}`)
       } finally {
-        setLoading(false)
+        // Calculate how much time has elapsed since loading started
+        const elapsedTime = Date.now() - loadingStartTime
+        
+        // If less than minimumLoadingTime has passed, wait until we reach it
+        if (elapsedTime < minimumLoadingTime) {
+          const remainingTime = minimumLoadingTime - elapsedTime
+          setTimeout(() => {
+            setLoading(false)
+          }, remainingTime)
+        } else {
+          // If minimumLoadingTime has already passed, we can stop loading immediately
+          setLoading(false)
+        }
       }
     }
 
