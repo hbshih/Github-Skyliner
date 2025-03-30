@@ -53,7 +53,7 @@ export default function RootLayout({
       <head>
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </head>
-      <body className={inter.className}>
+      <body suppressHydrationWarning className={inter.className}>
         <FixedThemeProvider>
           <VisualizationProvider>{children}</VisualizationProvider>
         </FixedThemeProvider>
