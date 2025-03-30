@@ -1,7 +1,7 @@
 import type React from "react"
 import type { Metadata } from "next"
 import { Inter, JetBrains_Mono } from "next/font/google"
-import "./globals.css"
+import "./global.css"
 import { FixedThemeProvider } from "@/components/fixed-theme-provider"
 import { VisualizationProvider } from "@/contexts/visualization-context"
 

@@ -1,0 +1,7 @@
+/* Test CSS file to verify CSS processing */
+.test-css-working {
+  color: red;
+  background-color: blue;
+  padding: 20px;
+  border: 5px solid green;
+}
