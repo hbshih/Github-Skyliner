@@ -130,11 +130,21 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
   ]
 
   const copyEmbedCode = () => {
-    const embedCode = `<iframe src="${window.location.origin}/embed?username=${username}&colorPalette=${colorPalette}&showLegend=${showLegend}&animateCharts=${animateCharts}" width="100%" height="500" frameborder="0"></iframe>`
+    // Build the embed URL with all current settings
+    let embedUrl = `${window.location.origin}/embed?username=${username}&visualType=${visualizationType}&colorPalette=${colorPalette}&showLegend=${showLegend}&animateCharts=${animateCharts}`
+    
+    // Add skyline-specific settings if the current visualization is skyline
+    if (visualizationType === 'skyline') {
+      embedUrl += `&skylineBuildingStyle=${skylineBuildingStyle}&skylineReflections=${skylineReflections}&skylineParticles=${skylineParticles}&skylineRotationSpeed=${skylineRotationSpeed}`
+    }
+    
+    // Generate responsive embed code with all settings
+    const embedCode = `<iframe src="${embedUrl}" width="100%" height="500" style="border:0; max-width:100%;" allow="fullscreen"></iframe>`
+    
     navigator.clipboard.writeText(embedCode)
     toast({
       title: "Copied!",
-      description: "Embed code copied to clipboard",
+      description: "Embed code copied to clipboard with all your current settings",
     })
   }
 

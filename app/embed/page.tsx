@@ -22,21 +22,28 @@ export default function EmbedPage() {
   // Get visualization preferences from URL if provided
   const visualTypeParam = searchParams?.get("visualType") as any
   const colorPaletteParam = searchParams?.get("colorPalette") as any
+  const showLegendParam = searchParams?.get("showLegend")
+  const animateChartsParam = searchParams?.get("animateCharts")
+  
+  // Skyline specific options
+  const skylineBuildingStyleParam = searchParams?.get("skylineBuildingStyle")
+  const skylineReflectionsParam = searchParams?.get("skylineReflections")
+  const skylineParticlesParam = searchParams?.get("skylineParticles")
+  const skylineRotationSpeedParam = searchParams?.get("skylineRotationSpeed")
+  
+  // Legacy parameters (kept for backward compatibility)
   const is3DEnabledParam = searchParams?.get("is3DEnabled")
   const showDataLabelsParam = searchParams?.get("showDataLabels")
-
   const sortDataParam = searchParams?.get("sortData")
   const chartBorderParam = searchParams?.get("chartBorder")
   const chartBackgroundParam = searchParams?.get("chartBackground")
   const textSizeParam = searchParams?.get("textSize")
   const fontStyleParam = searchParams?.get("fontStyle")
-  const showLegendParam = searchParams?.get("showLegend")
   const legendPositionParam = searchParams?.get("legendPosition")
   const barChartStyleParam = searchParams?.get("barChartStyle")
   const headlineNumberParam = searchParams?.get("headlineNumber")
   const startFromZeroParam = searchParams?.get("startFromZero")
   const useCurvedLinesParam = searchParams?.get("useCurvedLines")
-  const animateChartsParam = searchParams?.get("animateCharts")
 
   const {
     setVisualizationType,
@@ -80,26 +87,48 @@ export default function EmbedPage() {
       setColorPalette(colorPaletteParam)
     }
 
-    // These parameters are no longer supported in the current version
-
+    // Apply legend and animation settings
     if (showLegendParam !== null) {
       setShowLegend(showLegendParam === "true")
     }
 
-    // These parameters are no longer supported in the current version
-
     if (animateChartsParam !== null) {
       setAnimateCharts(animateChartsParam === "true")
+    }
+    
+    // Apply skyline-specific settings if provided
+    if (skylineBuildingStyleParam) {
+      setSkylineBuildingStyle(skylineBuildingStyleParam)
+    }
+    
+    if (skylineReflectionsParam !== null) {
+      setSkylineReflections(skylineReflectionsParam === "true")
+    }
+    
+    if (skylineParticlesParam !== null) {
+      setSkylineParticles(skylineParticlesParam === "true")
+    }
+    
+    if (skylineRotationSpeedParam !== null) {
+      setSkylineRotationSpeed(Number.parseFloat(skylineRotationSpeedParam))
     }
   }, [
     visualTypeParam,
     colorPaletteParam,
     showLegendParam,
     animateChartsParam,
+    skylineBuildingStyleParam,
+    skylineReflectionsParam,
+    skylineParticlesParam,
+    skylineRotationSpeedParam,
     setVisualizationType,
     setColorPalette,
     setShowLegend,
     setAnimateCharts,
+    setSkylineBuildingStyle,
+    setSkylineReflections,
+    setSkylineParticles,
+    setSkylineRotationSpeed,
     mounted,
   ])
 
