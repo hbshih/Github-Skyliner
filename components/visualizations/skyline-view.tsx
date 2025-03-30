@@ -4,14 +4,13 @@ import { useMemo } from "react"
 
 import { useRef, useState, useEffect } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import { OrbitControls, PerspectiveCamera, Cloud, Stars, Sky, Environment } from "@react-three/drei"
+import { OrbitControls, PerspectiveCamera, Sky, Environment } from "@react-three/drei"
 import { Html } from "@react-three/drei"
 import * as THREE from "three"
 import type { ContributionDay } from "@/app/actions/github"
 import { useVisualization } from "@/contexts/visualization-context"
 
-// Import the RealisticCity component
-import { RealisticCity } from "./realistic-city"
+// RealisticCity component import removed as it's no longer used
 
 // Import removed as it's already included above
 
@@ -211,263 +210,13 @@ const getSkylineColors = (palette: string): SkylineColors => {
   }
 }
 
-// Weather effects component
-function WeatherEffects({
-  weather,
-  timeOfDay,
-  fogDensity,
-}: { weather: string; timeOfDay: string; fogDensity: number }) {
-  const { scene } = useThree()
+// Weather effects component has been removed as it's not being used in the current implementation
 
-  useEffect(() => {
-    // Set fog based on weather and density
-    if (weather === "foggy" || weather === "cloudy") {
-      scene.fog = new THREE.FogExp2(timeOfDay === "night" ? "#0a0a0a" : "#e0e0e0", 0.01 * (fogDensity / 100))
-    } else if (weather === "rainy" || weather === "snowy") {
-      scene.fog = new THREE.FogExp2(timeOfDay === "night" ? "#0a0a0a" : "#c0c0c0", 0.005 * (fogDensity / 100))
-    } else {
-      scene.fog = new THREE.FogExp2(timeOfDay === "night" ? "#0a0a0a" : "#ffffff", 0.002 * (fogDensity / 100))
-    }
+// Particles component has been removed as it's not being used in the current implementation
 
-    return () => {
-      scene.fog = null
-    }
-  }, [scene, weather, timeOfDay, fogDensity])
+// EnvironmentElements component has been removed as it's not being used in the current implementation
 
-  // Render clouds based on weather
-  if (weather === "cloudy" || weather === "rainy" || weather === "snowy" || weather === "foggy") {
-    return (
-      <>
-        <Cloud
-          position={[0, 20, -10]}
-          opacity={weather === "foggy" ? 0.8 : 0.6}
-          speed={0.4}
-          width={weather === "foggy" ? 30 : 20}
-          depth={weather === "foggy" ? 5 : 2}
-          segments={20}
-        />
-        <Cloud
-          position={[-10, 15, -5]}
-          opacity={weather === "foggy" ? 0.7 : 0.5}
-          speed={0.3}
-          width={weather === "foggy" ? 25 : 15}
-          depth={weather === "foggy" ? 4 : 2}
-          segments={15}
-        />
-        <Cloud
-          position={[10, 18, -8]}
-          opacity={weather === "foggy" ? 0.9 : 0.7}
-          speed={0.5}
-          width={weather === "foggy" ? 35 : 18}
-          depth={weather === "foggy" ? 6 : 3}
-          segments={25}
-        />
 
-        {/* Add rain or snow particles if needed */}
-        {(weather === "rainy" || weather === "snowy") && <Particles weather={weather} />}
-      </>
-    )
-  }
-
-  return null
-}
-
-// Particles for rain or snow
-function Particles({ weather }: { weather: string }) {
-  const particlesRef = useRef<THREE.Points>(null)
-  const particleCount = 1000
-
-  // Create particles
-  const positions = useMemo(() => {
-    const positions = new Float32Array(particleCount * 3)
-    for (let i = 0; i < particleCount; i++) {
-      positions[i * 3] = (Math.random() - 0.5) * 100
-      positions[i * 3 + 1] = Math.random() * 50
-      positions[i * 3 + 2] = (Math.random() - 0.5) * 100
-    }
-    return positions
-  }, [particleCount])
-
-  // Animate particles
-  useFrame(() => {
-    if (!particlesRef.current) return
-
-    const positions = particlesRef.current.geometry.attributes.position.array as Float32Array
-
-    for (let i = 0; i < particleCount; i++) {
-      // Update y position (falling)
-      positions[i * 3 + 1] -= weather === "rainy" ? 0.3 : 0.05
-
-      // If snow, add some horizontal movement
-      if (weather === "snowy") {
-        positions[i * 3] += Math.sin(Date.now() * 0.001 + i) * 0.01
-        positions[i * 3 + 2] += Math.cos(Date.now() * 0.0015 + i) * 0.01
-      }
-
-      // Reset particles that fall below the ground
-      if (positions[i * 3 + 1] < 0) {
-        positions[i * 3] = (Math.random() - 0.5) * 100
-        positions[i * 3 + 1] = 50
-        positions[i * 3 + 2] = (Math.random() - 0.5) * 100
-      }
-    }
-
-    particlesRef.current.geometry.attributes.position.needsUpdate = true
-  })
-
-  return (
-    <points ref={particlesRef}>
-      <bufferGeometry>
-        <bufferAttribute attach="attributes-position" count={particleCount} array={positions} itemSize={3} args={[positions, 3]} />
-      </bufferGeometry>
-      <pointsMaterial
-        size={weather === "rainy" ? 0.1 : 0.3}
-        color={weather === "rainy" ? "#aaddff" : "#ffffff"}
-        transparent
-        opacity={0.8}
-      />
-    </points>
-  )
-}
-
-// Replace the EnvironmentElements function with this implementation that doesn't rely on external models
-
-// Environment based on selection
-function EnvironmentElements({
-  environment,
-  timeOfDay,
-  cityStyle = "stylized",
-}: {
-  environment: string
-  timeOfDay: string
-  cityStyle?: string
-}) {
-  // Create a ref for the group to maintain stable positioning
-  const groupRef = useRef<THREE.Group>(null)
-
-  // Position models based on environment
-  switch (environment) {
-    case "nature":
-      return (
-        <group ref={groupRef}>
-          {/* Add trees around the scene using simple cone and cylinder geometries with fixed positions */}
-          {Array.from({ length: 10 }).map((_, i) => {
-            // Use a deterministic position calculation instead of random
-            const angle = (i / 10) * Math.PI * 2
-            const radius = 30 + (i % 3) * 5
-            const posX = Math.cos(angle) * radius
-            const posZ = Math.sin(angle) * radius
-            const scale = 0.5 + (i % 5) * 0.1
-
-            return (
-              <group key={i} position={[posX, 0, posZ]} scale={[scale, scale, scale]}>
-                {/* Tree trunk */}
-                <mesh position={[0, 1, 0]} castShadow>
-                  <cylinderGeometry args={[0.3, 0.5, 2, 8]} />
-                  <meshStandardMaterial color="#8B4513" />
-                </mesh>
-                {/* Tree foliage */}
-                <mesh position={[0, 3, 0]} castShadow>
-                  <coneGeometry args={[2, 4, 8]} />
-                  <meshStandardMaterial color={timeOfDay === "night" ? "#0a3200" : "#2e8b57"} />
-                </mesh>
-              </group>
-            )
-          })}
-          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
-            <planeGeometry args={[100, 100]} />
-            <meshStandardMaterial color={timeOfDay === "night" ? "#0a3200" : "#1a6300"} />
-          </mesh>
-        </group>
-      )
-
-    case "desert":
-      return (
-        <group ref={groupRef}>
-          {/* Add cacti using simple geometries with fixed positions */}
-          {Array.from({ length: 8 }).map((_, i) => {
-            // Use a deterministic position calculation
-            const angle = (i / 8) * Math.PI * 2
-            const radius = 25 + (i % 4) * 5
-            const posX = Math.cos(angle) * radius
-            const posZ = Math.sin(angle) * radius
-            const scale = 0.3 + (i % 3) * 0.1
-
-            return (
-              <group key={i} position={[posX, 0, posZ]} scale={[scale, scale, scale]}>
-                {/* Cactus main body */}
-                <mesh position={[0, 1.5, 0]} castShadow>
-                  <cylinderGeometry args={[0.5, 0.7, 3, 8]} />
-                  <meshStandardMaterial color="#2F4F4F" />
-                </mesh>
-                {/* Cactus arms */}
-                <mesh position={[0.8, 2, 0]} rotation={[0, 0, Math.PI / 4]} castShadow>
-                  <cylinderGeometry args={[0.3, 0.3, 1.5, 8]} />
-                  <meshStandardMaterial color="#2F4F4F" />
-                </mesh>
-                <mesh position={[-0.8, 1.8, 0]} rotation={[0, 0, -Math.PI / 4]} castShadow>
-                  <cylinderGeometry args={[0.3, 0.3, 1.2, 8]} />
-                  <meshStandardMaterial color="#2F4F4F" />
-                </mesh>
-              </group>
-            )
-          })}
-          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
-            <planeGeometry args={[100, 100]} />
-            <meshStandardMaterial color={timeOfDay === "night" ? "#5a4a30" : "#d9c2a0"} />
-          </mesh>
-        </group>
-      )
-
-    case "space":
-      return (
-        <group ref={groupRef}>
-          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
-          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
-            <planeGeometry args={[100, 100]} />
-            <meshStandardMaterial color="#000000" emissive="#000033" emissiveIntensity={0.2} />
-          </mesh>
-
-          {/* Add some floating asteroids with fixed positions */}
-          {Array.from({ length: 15 }).map((_, i) => {
-            // Use a deterministic position calculation
-            const angle = (i / 15) * Math.PI * 2
-            const heightFactor = (i % 5) * 4
-            const radius = 40 + (i % 3) * 10
-            const posX = Math.cos(angle) * radius
-            const posY = 5 + heightFactor
-            const posZ = Math.sin(angle) * radius
-            const scale = 0.2 + (i % 4) * 0.2
-
-            return (
-              <mesh key={i} position={[posX, posY, posZ]} scale={[scale, scale, scale]} castShadow>
-                <dodecahedronGeometry args={[1, 0]} />
-                <meshStandardMaterial color="#444444" roughness={0.9} />
-              </mesh>
-            )
-          })}
-        </group>
-      )
-
-    case "city":
-    default:
-      // Use the realistic city if selected
-      if (cityStyle === "realistic") {
-        return <RealisticCity timeOfDay={timeOfDay} />
-      }
-
-      // Otherwise use a clean city floor without random buildings
-      return (
-        <group ref={groupRef}>
-          {/* Just add the ground plane without random buildings */}
-          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]}>
-            <planeGeometry args={[100, 100]} />
-            <meshStandardMaterial color={timeOfDay === "night" ? "#1a1a1a" : "#555555"} />
-          </mesh>
-        </group>
-      )
-  }
-}
 
 // Time of day lighting
 function TimeOfDayLighting({ timeOfDay }: { timeOfDay: string }) {
@@ -538,20 +287,13 @@ function TimeOfDayLighting({ timeOfDay }: { timeOfDay: string }) {
   }
 }
 
-// Grid component for the synthwave floor
-function SynthwaveGrid({ colors }: { colors: SkylineColors }) {
-  // Grid animation removed as grid is no longer displayed
-
+// Floor component for the skyline
+function SkylineFloor({ colors }: { colors: SkylineColors }) {
   return (
-    <>
-      {/* Grid removed as per user request */}
-
-      {/* Glowing floor */}
-      <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]}>
-        <planeGeometry args={[100, 100]} />
-        <meshStandardMaterial color={colors.floor} emissive={colors.floor} emissiveIntensity={0.5} />
-      </mesh>
-    </>
+    <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.2, 0]}>
+      <planeGeometry args={[100, 100]} />
+      <meshStandardMaterial color={colors.floor} emissive={colors.floor} emissiveIntensity={0.5} />
+    </mesh>
   )
 }
 
@@ -1039,7 +781,7 @@ export function SkylineView({
         <RotationIndicator />
 
         {/* Scene elements */}
-        <SynthwaveGrid colors={colors} />
+        <SkylineFloor colors={colors} />
         <ContributionBuildings
           data={contributions}
           colorPalette={colorPalette}
