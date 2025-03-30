@@ -16,7 +16,7 @@ export function VisualizationSettings() {
     setMounted(true)
   }, [])
 
-  const { visualizationType, setVisualizationType, colorPalette, setColorPalette, is3DEnabled, setIs3DEnabled } =
+  const { visualizationType, setVisualizationType, colorPalette, setColorPalette } =
     useVisualization()
 
   const visualizationTypes: { value: VisualizationType; label: string; icon: React.ReactNode }[] = [
@@ -29,26 +29,6 @@ export function VisualizationSettings() {
       value: "calendar",
       label: "Calendar",
       icon: <Calendar className="h-4 w-4" />,
-    },
-    {
-      value: "bar",
-      label: "Bar Chart",
-      icon: <BarChart3 className="h-4 w-4" />,
-    },
-    {
-      value: "line",
-      label: "Line Chart",
-      icon: <LineChart className="h-4 w-4" />,
-    },
-    {
-      value: "heatmap",
-      label: "Heatmap",
-      icon: <Grid3X3 className="h-4 w-4" />,
-    },
-    {
-      value: "3d-bar",
-      label: "3D Bar",
-      icon: <Cube className="h-4 w-4" />,
     },
   ]
 

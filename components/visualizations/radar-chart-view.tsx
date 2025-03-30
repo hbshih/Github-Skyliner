@@ -71,7 +71,13 @@ export function RadarChartView({ contributions, height = 400 }: RadarChartViewPr
 
   return (
     <div style={{ height: `${height}px` }}>
-      <ChartContainer>
+      <ChartContainer
+        config={{
+          contributions: {
+            label: "Contribution Metrics",
+            color: "hsl(var(--primary))"
+          }
+        }}>
         <ResponsiveContainer width="100%" height="100%">
           <RadarChart cx="50%" cy="50%" outerRadius="80%" data={chartData}>
             <PolarGrid />

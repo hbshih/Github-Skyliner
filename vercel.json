@@ -1,8 +1,8 @@
 {
   "version": 2,
-  "buildCommand": "next build",
+  "buildCommand": "node vercel-build.js",
   "devCommand": "next dev",
-  "installCommand": "npm install",
+  "installCommand": "npm install --legacy-peer-deps --force",
   "framework": "nextjs",
   "regions": ["iad1"],
   "public": false,

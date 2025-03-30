@@ -6,7 +6,7 @@ import { useVisualization } from "@/contexts/visualization-context"
 
 export function KeyboardShortcuts() {
   const [showHelp, setShowHelp] = useState(false)
-  const { setVisualizationType, setSkylineTimeOfDay, setSkylineWeather, setSkylineBuildingStyle } = useVisualization()
+  const { setVisualizationType, setSkylineBuildingStyle, setSkylineEnvironment } = useVisualization()
 
   useEffect(() => {
     const handleKeyDown = (e: KeyboardEvent) => {
@@ -28,43 +28,35 @@ export function KeyboardShortcuts() {
         setVisualizationType("calendar")
       }
 
-      // Handle time of day shortcuts
+      // Handle environment shortcuts
       if (e.key === "d") {
-        setSkylineTimeOfDay("day")
+        setSkylineEnvironment("city")
       } else if (e.key === "n") {
-        setSkylineTimeOfDay("night")
+        setSkylineEnvironment("night")
       } else if (e.key === "s") {
-        setSkylineTimeOfDay("sunset")
-      } else if (e.key === "r") {
-        setSkylineTimeOfDay("sunrise")
-      }
-
-      // Handle weather shortcuts
-      if (e.key === "c") {
-        setSkylineWeather("clear")
-      } else if (e.key === "f") {
-        setSkylineWeather("foggy")
-      } else if (e.key === "w") {
-        setSkylineWeather("cloudy")
-      } else if (e.key === "a") {
-        setSkylineWeather("rainy")
+        setSkylineEnvironment("sunset")
       }
 
       // Handle building style shortcuts
       if (e.key === "m") {
         setSkylineBuildingStyle("modern")
-      } else if (e.key === "p") {
+      } else if (e.key === "f") {
+        setSkylineBuildingStyle("futuristic")
+      } else if (e.key === "c") {
+        setSkylineBuildingStyle("classic")
+      }
+
+      // Handle additional building style shortcuts
+      if (e.key === "p") {
         setSkylineBuildingStyle("pixel")
       } else if (e.key === "k") {
         setSkylineBuildingStyle("skyscraper")
-      } else if (e.key === "u") {
-        setSkylineBuildingStyle("futuristic")
       }
     }
 
     window.addEventListener("keydown", handleKeyDown)
     return () => window.removeEventListener("keydown", handleKeyDown)
-  }, [setVisualizationType, setSkylineTimeOfDay, setSkylineWeather, setSkylineBuildingStyle])
+  }, [setVisualizationType, setSkylineBuildingStyle, setSkylineEnvironment])
 
   if (!showHelp) return null
 
@@ -96,10 +88,10 @@ export function KeyboardShortcuts() {
         </div>
 
         <div>
-          <h4 className="font-medium text-primary mb-1">Time of Day</h4>
+          <h4 className="font-medium text-primary mb-1">Environment</h4>
           <ul className="space-y-1">
             <li className="flex justify-between">
-              <span>Day</span>
+              <span>City</span>
               <kbd className="px-2 py-0.5 bg-secondary rounded text-muted-foreground">d</kbd>
             </li>
             <li className="flex justify-between">
@@ -109,10 +101,6 @@ export function KeyboardShortcuts() {
             <li className="flex justify-between">
               <span>Sunset</span>
               <kbd className="px-2 py-0.5 bg-secondary rounded text-muted-foreground">s</kbd>
-            </li>
-            <li className="flex justify-between">
-              <span>Sunrise</span>
-              <kbd className="px-2 py-0.5 bg-secondary rounded text-muted-foreground">r</kbd>
             </li>
           </ul>
         </div>

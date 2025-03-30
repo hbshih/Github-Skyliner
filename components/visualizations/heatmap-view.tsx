@@ -11,7 +11,7 @@ interface HeatmapViewProps {
 }
 
 export function HeatmapView({ contributions, height = 400 }: HeatmapViewProps) {
-  const { getContributionColor, colorPalette, is3DEnabled } = useVisualization()
+  const { getContributionColor, colorPalette } = useVisualization()
   const [hoveredDay, setHoveredDay] = useState<ContributionDay | null>(null)
 
   // Ensure we have valid contributions
@@ -90,7 +90,7 @@ export function HeatmapView({ contributions, height = 400 }: HeatmapViewProps) {
                       className={`
                         heatmap-cell
                         ${useGradient ? `contribution-gradient-${day.level || 0}` : `contribution-level-${day.level || 0}`}
-                        ${is3DEnabled ? "cell-3d" : ""}
+                        
                         ${colorPalette === "holographic" ? "holographic-effect" : ""}
                       `}
                       onMouseEnter={() => setHoveredDay(day)}

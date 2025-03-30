@@ -23,13 +23,9 @@ export function ContributionGraph({ username, height = 400 }: ContributionGraphP
 
   const {
     visualizationType,
-    showDataLabels,
-    showGridLines,
     showLegend,
-    is3DEnabled,
     animateCharts,
-    chartBorder,
-    chartBackground,
+    setContributions: setContextContributions
   } = useVisualization()
 
   useEffect(() => {
@@ -50,6 +46,8 @@ export function ContributionGraph({ username, height = 400 }: ContributionGraphP
         }
 
         setContributions(data.contributionDays)
+        // Also update the context with the contributions data
+        setContextContributions(data.contributionDays)
         setStats({
           total: data.totalContributions || 0,
           maxStreak: data.maxStreak || 0,
@@ -82,13 +80,8 @@ export function ContributionGraph({ username, height = 400 }: ContributionGraphP
 
   // Common props for visualizations
   const commonProps = {
-    showDataLabels,
-    showGridLines,
     showLegend,
-    is3DEnabled,
     animate: animateCharts,
-    border: chartBorder,
-    background: chartBackground,
   }
 
   return (

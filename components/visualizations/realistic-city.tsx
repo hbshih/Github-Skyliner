@@ -283,7 +283,7 @@ function RealisticBuilding({
   }, [width, depth, height, timeOfDay])
 
   return (
-    <group position={position}>
+    <group position={new THREE.Vector3(...position)}>
       {/* Main building structure */}
       <mesh castShadow receiveShadow>
         <boxGeometry args={[width, height, depth]} />
@@ -292,8 +292,8 @@ function RealisticBuilding({
 
       {/* Windows */}
       {windowPattern.map((window, index) => (
-        <mesh key={index} position={window.position} castShadow>
-          <boxGeometry args={window.size} />
+        <mesh key={index} position={new THREE.Vector3(...window.position)} castShadow>
+          <boxGeometry args={[window.size[0], window.size[1], window.size[2]]} />
           <meshStandardMaterial
             color={window.isLit ? "#ffff99" : "#aaddff"}
             emissive={window.isLit ? "#ffff99" : "#000000"}
@@ -331,7 +331,7 @@ function RealisticBuilding({
 // Road component
 function Road({ position = [0, -0.05, 0], width = 80, length = 10 }) {
   return (
-    <group position={position}>
+    <group position={new THREE.Vector3(...position)}>
       {/* Road surface */}
       <mesh rotation={[-Math.PI / 2, 0, 0]} receiveShadow>
         <planeGeometry args={[width, length]} />
@@ -363,7 +363,7 @@ function StreetLamp({ position, timeOfDay = "day" }: { position: [number, number
   const isLit = timeOfDay === "night" || timeOfDay === "sunset" || timeOfDay === "sunrise"
 
   return (
-    <group position={position}>
+    <group position={new THREE.Vector3(...position)}>
       {/* Lamp post */}
       <mesh castShadow>
         <cylinderGeometry args={[0.1, 0.1, 3, 8]} />
@@ -401,7 +401,7 @@ function StreetLamp({ position, timeOfDay = "day" }: { position: [number, number
 // Tree component
 function StreetTree({ position }: { position: [number, number, number] }) {
   return (
-    <group position={position}>
+    <group position={new THREE.Vector3(...position)}>
       {/* Tree trunk */}
       <mesh castShadow>
         <cylinderGeometry args={[0.2, 0.3, 1, 8]} />

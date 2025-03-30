@@ -16,10 +16,20 @@ const nextConfig = {
   images: {
     unoptimized: true,
   },
+  transpilePackages: ['three', '@react-three/fiber', '@react-three/drei'],
   experimental: {
     webpackBuildWorker: true,
     parallelServerBuildTraces: true,
     parallelServerCompiles: true,
+    esmExternals: 'loose',
+  },
+  webpack: (config) => {
+    // Resolve dependency conflicts
+    config.resolve.alias = {
+      ...config.resolve.alias,
+    };
+    
+    return config;
   },
 }
 

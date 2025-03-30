@@ -1053,7 +1053,8 @@ export function SkylineView({
     <div style={{ height: `${height}px`, width: "100%" }} className={containerClasses}>
       <Canvas id="skyline-canvas" gl={{ preserveDrawingBuffer: true }} style={{ height: '100%' }}>
         {/* Camera setup */}
-        <PerspectiveCamera makeDefault position={[0, 15, 25]} fov={50} />
+        <OrbitControls enableZoom={true} enablePan={false} maxPolarAngle={Math.PI / 2} minDistance={10} maxDistance={50} />
+        <color attach="background" args={[colors.background]} />
         <CameraController animate={animate} rotationSpeed={skylineRotationSpeed} />
         <RotationIndicator />
 
