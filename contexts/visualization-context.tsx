@@ -61,6 +61,8 @@ interface VisualizationContextType {
   // Skyline specific options
   skylineBuildingStyle: string
   setSkylineBuildingStyle: (style: string) => void
+  skylineEnvironment: string
+  setSkylineEnvironment: (environment: string) => void
   skylineReflections: boolean
   setSkylineReflections: (enabled: boolean) => void
   skylineParticles: boolean
@@ -88,6 +90,8 @@ const VisualizationContext = createContext<VisualizationContextType>({
   // Skyline specific options
   skylineBuildingStyle: "modern",
   setSkylineBuildingStyle: () => {},
+  skylineEnvironment: "city",
+  setSkylineEnvironment: () => {},
   skylineReflections: true,
   setSkylineReflections: () => {},
   skylineParticles: true,
@@ -110,6 +114,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
 
   // Skyline specific options
   const [skylineBuildingStyle, setSkylineBuildingStyle] = useState("modern")
+  const [skylineEnvironment, setSkylineEnvironment] = useState("city")
   const [skylineReflections, setSkylineReflections] = useState(true)
   const [skylineParticles, setSkylineParticles] = useState(true)
   const [skylineRotationSpeed, setSkylineRotationSpeed] = useState(0.5)
@@ -173,6 +178,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
 
       // Skyline specific options
       localStorage.setItem("skyline-building-style", skylineBuildingStyle)
+      localStorage.setItem("skyline-environment", skylineEnvironment)
       localStorage.setItem("skyline-reflections", skylineReflections.toString())
       localStorage.setItem("skyline-particles", skylineParticles.toString())
       localStorage.setItem("skyline-rotation-speed", skylineRotationSpeed.toString())
@@ -186,6 +192,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
     showLegend,
     animateCharts,
     skylineBuildingStyle,
+    skylineEnvironment,
     skylineReflections,
     skylineParticles,
     skylineRotationSpeed,
@@ -209,6 +216,7 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
 
       // Skyline specific options
       const savedSkylineBuildingStyle = localStorage.getItem("skyline-building-style")
+      const savedSkylineEnvironment = localStorage.getItem("skyline-environment")
       const savedSkylineReflections = localStorage.getItem("skyline-reflections")
       const savedSkylineParticles = localStorage.getItem("skyline-particles")
       const savedSkylineRotationSpeed = localStorage.getItem("skyline-rotation-speed")
@@ -226,6 +234,10 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
       // Skyline specific options
       if (savedSkylineBuildingStyle) {
         setSkylineBuildingStyle(savedSkylineBuildingStyle)
+      }
+      
+      if (savedSkylineEnvironment) {
+        setSkylineEnvironment(savedSkylineEnvironment)
       }
 
       if (savedSkylineReflections !== null) {
@@ -262,6 +274,8 @@ export function VisualizationProvider({ children }: { children: ReactNode }) {
         // Skyline specific options
         skylineBuildingStyle,
         setSkylineBuildingStyle,
+        skylineEnvironment,
+        setSkylineEnvironment,
         skylineReflections,
         setSkylineReflections,
         skylineParticles,

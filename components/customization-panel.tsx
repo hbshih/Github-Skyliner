@@ -73,6 +73,8 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
     setAnimateCharts,
     skylineBuildingStyle,
     setSkylineBuildingStyle,
+    skylineEnvironment,
+    setSkylineEnvironment,
     skylineReflections,
     setSkylineReflections,
     skylineParticles,
@@ -122,6 +124,14 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
     { value: "skyscraper", label: "NYC Skyscraper" },
   ]
 
+  const environmentOptions = [
+    { value: "city", label: "City" },
+    { value: "nature", label: "Nature" },
+    { value: "mountains", label: "Mountains" },
+    { value: "desert", label: "Desert" },
+    { value: "night", label: "Night Sky" },
+  ]
+
   const exportSizes = [
     { value: "sm", label: "Small (800×450)", width: 800, height: 450 },
     { value: "md", label: "Medium (1200×675)", width: 1200, height: 675 },
@@ -135,7 +145,7 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
     
     // Add skyline-specific settings if the current visualization is skyline
     if (visualizationType === 'skyline') {
-      embedUrl += `&skylineBuildingStyle=${skylineBuildingStyle}&skylineReflections=${skylineReflections}&skylineParticles=${skylineParticles}&skylineRotationSpeed=${skylineRotationSpeed}`
+      embedUrl += `&skylineBuildingStyle=${skylineBuildingStyle}&skylineEnvironment=${skylineEnvironment}&skylineReflections=${skylineReflections}&skylineParticles=${skylineParticles}&skylineRotationSpeed=${skylineRotationSpeed}`
     }
     
     // Generate responsive embed code with all settings
@@ -549,6 +559,26 @@ export function CustomizationPanel({ username }: CustomizationPanelProps) {
                       <div key={option.value} className="flex items-center space-x-2">
                         <RadioGroupItem value={option.value} id={`building-${option.value}`} />
                         <Label htmlFor={`building-${option.value}`} className="text-sm">
+                          {option.label}
+                        </Label>
+                      </div>
+                    ))}
+                  </RadioGroup>
+                </div>
+
+                <Separator />
+
+                <div className="space-y-3">
+                  <h4 className="text-sm font-medium">Environment Style</h4>
+                  <RadioGroup
+                    value={skylineEnvironment}
+                    onValueChange={(value) => setSkylineEnvironment(value)}
+                    className="flex flex-col gap-2"
+                  >
+                    {environmentOptions.map((option) => (
+                      <div key={option.value} className="flex items-center space-x-2">
+                        <RadioGroupItem value={option.value} id={`environment-${option.value}`} />
+                        <Label htmlFor={`environment-${option.value}`} className="text-sm">
                           {option.label}
                         </Label>
                       </div>

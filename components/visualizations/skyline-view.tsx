@@ -4,7 +4,7 @@ import { useMemo } from "react"
 
 import { useRef, useState, useEffect } from "react"
 import { Canvas, useFrame, useThree } from "@react-three/fiber"
-import { OrbitControls, PerspectiveCamera, Sky, Environment } from "@react-three/drei"
+import { OrbitControls, PerspectiveCamera, Sky, Environment, Stars } from "@react-three/drei"
 import { Html } from "@react-three/drei"
 import * as THREE from "three"
 import type { ContributionDay } from "@/app/actions/github"
@@ -32,6 +32,7 @@ interface SkylineColors {
   spotlightB: string
   fog: string
   text: string
+  background: string
 }
 
 // Define color themes for different palettes
@@ -46,6 +47,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#00ffff",
         fog: "#120038",
         text: "#ff00ff",
+        background: "#120038",
       }
     case "cyberpunk":
       return {
@@ -56,6 +58,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#8c1eff",
         fog: "#0d0221",
         text: "#ffd319",
+        background: "#0d0221",
       }
     case "neon":
       return {
@@ -66,6 +69,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#0099ff",
         fog: "#000033",
         text: "#00ffff",
+        background: "#000033",
       }
     case "gradient":
       return {
@@ -76,6 +80,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#ad6ba2",
         fog: "#1a0b2e",
         text: "#9c55af",
+        background: "#1a0b2e",
       }
     case "holographic":
       return {
@@ -86,6 +91,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#9d63ff",
         fog: "#0a192f",
         text: "#83eaf1",
+        background: "#0a192f",
       }
     case "sunset":
       return {
@@ -96,6 +102,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#ffd8be",
         fog: "#1f1013",
         text: "#feb47b",
+        background: "#1f1013",
       }
     case "ocean":
       return {
@@ -106,6 +113,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#006992",
         fog: "#0a1128",
         text: "#27476e",
+        background: "#0a1128",
       }
     case "default":
       return {
@@ -116,6 +124,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#ffcdc8",
         fog: "#121212",
         text: "#ff6b61",
+        background: "#121212",
       }
     case "github":
       return {
@@ -126,6 +135,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#216e39",
         fog: "#0d1117",
         text: "#40c463",
+        background: "#0d1117",
       }
     case "pastel":
       return {
@@ -136,6 +146,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#caffbf",
         fog: "#f0f0f0",
         text: "#ffb5b5",
+        background: "#f0f0f0",
       }
     case "monochrome":
       return {
@@ -146,6 +157,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#8a8a8a",
         fog: "#121212",
         text: "#8a8a8a",
+        background: "#121212",
       }
     case "aurora":
       return {
@@ -156,6 +168,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#0f1f61",
         fog: "#121212",
         text: "#00ff87",
+        background: "#121212",
       }
     case "cosmic":
       return {
@@ -166,6 +179,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#4cc9f0",
         fog: "#121212",
         text: "#4361ee",
+        background: "#121212",
       }
     case "emerald":
       return {
@@ -176,6 +190,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#007200",
         fog: "#121212",
         text: "#006400",
+        background: "#121212",
       }
     case "ruby":
       return {
@@ -186,6 +201,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#800f2f",
         fog: "#121212",
         text: "#a4133c",
+        background: "#121212",
       }
     case "sapphire":
       return {
@@ -196,6 +212,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#023e8a",
         fog: "#121212",
         text: "#0077b6",
+        background: "#121212",
       }
     default:
       return {
@@ -206,6 +223,7 @@ const getSkylineColors = (palette: string): SkylineColors => {
         spotlightB: "#00ffff",
         fog: "#120038",
         text: "#ff00ff",
+        background: "#120038",
       }
   }
 }
@@ -214,8 +232,266 @@ const getSkylineColors = (palette: string): SkylineColors => {
 
 // Particles component has been removed as it's not being used in the current implementation
 
-// EnvironmentElements component has been removed as it's not being used in the current implementation
+// Environment scene component that renders different environments based on the selected environment type
+function EnvironmentScene({ environment, colors, reflections }: { environment: string; colors: SkylineColors; reflections: boolean }) {
+  const { scene } = useThree()
+  
+  useEffect(() => {
+    // Set scene background color based on environment
+    if (environment === "nature") {
+      scene.background = new THREE.Color("#87CEEB") // Sky blue
+    } else if (environment === "mountains") {
+      scene.background = new THREE.Color("#B0C4DE") // Light steel blue
+    } else if (environment === "desert") {
+      scene.background = new THREE.Color("#F0E68C") // Khaki
+    } else if (environment === "night") {
+      scene.background = new THREE.Color("#191970") // Midnight blue
+    } else {
+      // Default city environment
+      scene.background = new THREE.Color(colors.background)
+    }
+  }, [environment, colors, scene])
 
+  // Common lighting setup for all environments
+  const renderLights = () => {
+    return (
+      <>
+        {/* Ambient light for overall scene illumination */}
+        <ambientLight intensity={0.5} />
+        
+        {/* Main directional light (like the sun) */}
+        <directionalLight 
+          position={[50, 50, 25]} 
+          intensity={0.8} 
+          castShadow 
+          shadow-mapSize={[2048, 2048]}
+          shadow-camera-left={-50}
+          shadow-camera-right={50}
+          shadow-camera-top={50}
+          shadow-camera-bottom={-50}
+        />
+        
+        {/* Fill light from opposite direction */}
+        <directionalLight 
+          position={[-30, 30, -20]} 
+          intensity={0.4} 
+          castShadow={false} 
+        />
+        
+        {/* Spotlight to highlight the center of the scene */}
+        <spotLight 
+          position={[0, 40, 0]} 
+          angle={Math.PI / 4} 
+          penumbra={0.2} 
+          intensity={0.8} 
+          castShadow 
+          shadow-mapSize={[1024, 1024]}
+        />
+      </>
+    )
+  }
+
+  // Render different environment elements based on the selected environment
+  switch (environment) {
+    case "nature":
+      return (
+        <group>
+          {/* Lighting */}
+          {renderLights()}
+          
+          {/* Trees */}
+          {Array.from({ length: 15 }).map((_, i) => {
+            const angle = (i / 15) * Math.PI * 2
+            const radius = 40 + (i % 5) * 5
+            const posX = Math.cos(angle) * radius
+            const posZ = Math.sin(angle) * radius
+            const scale = 0.8 + (i % 3) * 0.4
+            
+            return (
+              <group key={i} position={[posX, 0, posZ]} scale={[scale, scale, scale]}>
+                {/* Tree trunk */}
+                <mesh position={[0, 2, 0]} castShadow>
+                  <cylinderGeometry args={[0.5, 0.8, 4, 8]} />
+                  <meshStandardMaterial color="#8B4513" />
+                </mesh>
+                {/* Tree foliage */}
+                <mesh position={[0, 6, 0]} castShadow>
+                  <coneGeometry args={[3, 6, 8]} />
+                  <meshStandardMaterial color="#228B22" />
+                </mesh>
+              </group>
+            )
+          })}
+          
+          {/* Ground */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
+            <planeGeometry args={[500, 500]} />
+            <meshStandardMaterial color="#228B22" />
+          </mesh>
+        </group>
+      )
+      
+    case "mountains":
+      return (
+        <group>
+          {/* Lighting */}
+          {renderLights()}
+          
+          {/* Mountains */}
+          {Array.from({ length: 8 }).map((_, i) => {
+            const angle = (i / 8) * Math.PI * 2
+            const radius = 50 + (i % 3) * 10
+            const posX = Math.cos(angle) * radius
+            const posZ = Math.sin(angle) * radius
+            const height = 15 + (i % 4) * 5
+            
+            return (
+              <mesh key={i} position={[posX, height/2 - 0.1, posZ]} castShadow>
+                <coneGeometry args={[height, height*2, 4]} />
+                <meshStandardMaterial color="#708090" />
+              </mesh>
+            )
+          })}
+          
+          {/* Snow caps */}
+          {Array.from({ length: 8 }).map((_, i) => {
+            const angle = (i / 8) * Math.PI * 2
+            const radius = 50 + (i % 3) * 10
+            const posX = Math.cos(angle) * radius
+            const posZ = Math.sin(angle) * radius
+            const height = 15 + (i % 4) * 5
+            
+            return (
+              <mesh key={i} position={[posX, height*1.2, posZ]} castShadow>
+                <coneGeometry args={[height/4, height/3, 4]} />
+                <meshStandardMaterial color="#FFFFFF" />
+              </mesh>
+            )
+          })}
+          
+          {/* Ground */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
+            <planeGeometry args={[500, 500]} />
+            <meshStandardMaterial color="#90EE90" />
+          </mesh>
+        </group>
+      )
+      
+    case "desert":
+      return (
+        <group>
+          {/* Lighting */}
+          {renderLights()}
+          
+          {/* Cacti */}
+          {Array.from({ length: 12 }).map((_, i) => {
+            const angle = (i / 12) * Math.PI * 2
+            const radius = 40 + (i % 4) * 8
+            const posX = Math.cos(angle) * radius
+            const posZ = Math.sin(angle) * radius
+            const scale = 0.7 + (i % 3) * 0.3
+            
+            return (
+              <group key={i} position={[posX, 0, posZ]} scale={[scale, scale, scale]}>
+                {/* Cactus body */}
+                <mesh position={[0, 3, 0]} castShadow>
+                  <cylinderGeometry args={[0.8, 1, 6, 8]} />
+                  <meshStandardMaterial color="#2F4F4F" />
+                </mesh>
+                {/* Cactus arms */}
+                <mesh position={[1.2, 4, 0]} rotation={[0, 0, Math.PI / 3]} castShadow>
+                  <cylinderGeometry args={[0.5, 0.5, 2.5, 8]} />
+                  <meshStandardMaterial color="#2F4F4F" />
+                </mesh>
+                <mesh position={[-1.2, 3.5, 0]} rotation={[0, 0, -Math.PI / 3]} castShadow>
+                  <cylinderGeometry args={[0.5, 0.5, 2, 8]} />
+                  <meshStandardMaterial color="#2F4F4F" />
+                </mesh>
+              </group>
+            )
+          })}
+          
+          {/* Sand dunes */}
+          {Array.from({ length: 6 }).map((_, i) => {
+            const angle = (i / 6) * Math.PI * 2
+            const radius = 30 + (i % 3) * 15
+            const posX = Math.cos(angle) * radius
+            const posZ = Math.sin(angle) * radius
+            
+            return (
+              <mesh key={i} position={[posX, 1, posZ]} rotation={[0, i * 0.5, 0]} castShadow>
+                <sphereGeometry args={[10, 8, 8, 0, Math.PI * 2, 0, Math.PI / 4]} />
+                <meshStandardMaterial color="#F4A460" />
+              </mesh>
+            )
+          })}
+          
+          {/* Ground */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
+            <planeGeometry args={[500, 500]} />
+            <meshStandardMaterial color="#F4A460" />
+          </mesh>
+        </group>
+      )
+      
+    case "night":
+      return (
+        <group>
+          {/* Special night lighting - dimmer than other environments */}
+          <ambientLight intensity={0.2} />
+          
+          {/* Moon light */}
+          <directionalLight 
+            position={[50, 40, -50]} 
+            intensity={0.4} 
+            castShadow 
+            shadow-mapSize={[2048, 2048]}
+            color="#b0c4de"
+          />
+          
+          {/* Dim fill light */}
+          <directionalLight 
+            position={[-30, 30, -20]} 
+            intensity={0.2} 
+            castShadow={false} 
+            color="#4169e1"
+          />
+          
+          {/* Stars */}
+          <Stars radius={100} depth={50} count={5000} factor={4} saturation={0} fade speed={1} />
+          
+          {/* Moon */}
+          <mesh position={[50, 40, -50]} castShadow>
+            <sphereGeometry args={[5, 32, 32]} />
+            <meshStandardMaterial color="#FFFFFF" emissive="#FFFFFF" emissiveIntensity={0.5} />
+          </mesh>
+          
+          {/* Ground */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
+            <planeGeometry args={[500, 500]} />
+            <meshStandardMaterial color="#0a0a0a" />
+          </mesh>
+        </group>
+      )
+      
+    default: // City (default)
+      return (
+        <group>
+          {/* Lighting */}
+          {renderLights()}
+          
+          {/* City floor */}
+          <mesh rotation={[-Math.PI / 2, 0, 0]} position={[0, -0.1, 0]} receiveShadow>
+            <planeGeometry args={[500, 500]} />
+            <meshStandardMaterial color={colors.floor} />
+          </mesh>
+          
+          {/* Environment lighting */}
+          {reflections && <Environment preset="city" />}
+        </group>
+      )
+  }
+}
 
 
 // Time of day lighting
@@ -741,6 +1017,7 @@ export function SkylineView({
   const {
     colorPalette,
     skylineBuildingStyle,
+    skylineEnvironment,
     skylineReflections,
     skylineParticles,
     skylineRotationSpeed,
@@ -795,8 +1072,12 @@ export function SkylineView({
           setHoveredDay={setHoveredDay}
         />
 
-        {/* Environment map for reflections */}
-        {skylineReflections && <Environment preset="city" />}
+        {/* Environment scene with different environments */}
+        <EnvironmentScene 
+          environment={skylineEnvironment} 
+          colors={colors} 
+          reflections={skylineReflections}
+        />
       </Canvas>
 
       {/* Overlay gradient for synthwave effect */}

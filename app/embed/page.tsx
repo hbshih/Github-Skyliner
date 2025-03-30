@@ -27,6 +27,7 @@ export default function EmbedPage() {
   
   // Skyline specific options
   const skylineBuildingStyleParam = searchParams?.get("skylineBuildingStyle")
+  const skylineEnvironmentParam = searchParams?.get("skylineEnvironment")
   const skylineReflectionsParam = searchParams?.get("skylineReflections")
   const skylineParticlesParam = searchParams?.get("skylineParticles")
   const skylineRotationSpeedParam = searchParams?.get("skylineRotationSpeed")
@@ -51,6 +52,7 @@ export default function EmbedPage() {
     setShowLegend,
     setAnimateCharts,
     setSkylineBuildingStyle,
+    setSkylineEnvironment,
     setSkylineReflections,
     setSkylineParticles,
     setSkylineRotationSpeed
@@ -101,6 +103,10 @@ export default function EmbedPage() {
       setSkylineBuildingStyle(skylineBuildingStyleParam)
     }
     
+    if (skylineEnvironmentParam) {
+      setSkylineEnvironment(skylineEnvironmentParam)
+    }
+    
     if (skylineReflectionsParam !== null) {
       setSkylineReflections(skylineReflectionsParam === "true")
     }
@@ -118,6 +124,7 @@ export default function EmbedPage() {
     showLegendParam,
     animateChartsParam,
     skylineBuildingStyleParam,
+    skylineEnvironmentParam,
     skylineReflectionsParam,
     skylineParticlesParam,
     skylineRotationSpeedParam,
@@ -126,6 +133,7 @@ export default function EmbedPage() {
     setShowLegend,
     setAnimateCharts,
     setSkylineBuildingStyle,
+    setSkylineEnvironment,
     setSkylineReflections,
     setSkylineParticles,
     setSkylineRotationSpeed,
